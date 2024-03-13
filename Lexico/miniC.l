@@ -1,10 +1,11 @@
-//
-// miniC.l
-// Created by Antonio L—pez Toboso and Mercedes L—pez Caballero on 14/2/24.
+ 
+/* miniC.l */
+/* Created by Antonio L—pez Toboso and Mercedes L—pez Caballero on 14/2/24. */
 
 %{
-#include "./Lexico/miniC.h" /*PENDIENTE CAMBIAR A .tab*/
+#include "miniC.tab.h" /*PENDIENTE CAMBIAR A .tab*/
 #define MAX_INTEGER 2147483648
+int in_range();
 %}
 
 %s comm
@@ -12,7 +13,7 @@
 digito              [0-9]
 letra               [a-zA-Z]
 entero              {digito}+
-panico				[^ \n\t\r/a-zA-Z_0-9{}(),;=+-*"]+
+panico				[^ \n\t\r/a-zA-Z_0-9{}(),;=+\-*"]+
 
 %%
 
@@ -41,8 +42,8 @@ read										return READ;
 "*"											return TIMES;
 "/"											return DIV;
 "="											return EQUALS;
-"("                                         return LPAREN;
-")"                                         return RPAREN;
+"("                                         return LPAR;
+")"                                         return RPAR;
 "{"											return LKEY;
 "}"											return RKEY;
 
@@ -51,14 +52,14 @@ read										return READ;
 {entero}                                    {yylval.cad = strdup(yytext); return in_range();}
 \"([^"\n]|\\.)*\"							{yylval.cad = strdup(yytext); return STRING;}
 
-{panico}									fprintf(stderr, "Linea %d: Error: Caracter (%s) no permitido.\n",yylineno, yytext);
+{panico}									{fprintf(stderr, "Linea %d: Error: Caracter (%s) no permitido.\n",yylineno, yytext);}
 
 %%
 
 int in_range(){
 	
 	if( atoll(yytext) > MAX_INTEGER ) {
-		fprintf("Linea %d: Error: NUMBER ( %s ) excede el tama–o permitido.\n", yylineno, yytext);
+		printf("Linea %d: Error: NUMBER ( %s ) excede el tama–o permitido.\n", yylineno, yytext);
 	}
 	return NUMBER;
 }
