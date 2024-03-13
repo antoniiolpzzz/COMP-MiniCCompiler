@@ -1,5 +1,7 @@
 main_OLD_DELETE.c
 .gitattributes
+make/
+miniC
 
 # Prerequisites
 *.d

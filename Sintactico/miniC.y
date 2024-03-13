@@ -78,7 +78,7 @@ expression		:	expression PLUSOP expression						{printf("expression -> expressio
 				
 %%
 
-void yyerror(){
+void yyerror(char *c){
 	
-	
+	printf("Error sintáctico (línea %d): (yyerror) %s \n", yylineno, c);
 }
