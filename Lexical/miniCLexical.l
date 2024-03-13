@@ -3,7 +3,7 @@
 /* Created by Antonio L—pez Toboso and Mercedes L—pez Caballero on 14/2/24. */
 
 %{
-#include "miniC.tab.h" /*PENDIENTE CAMBIAR A .tab*/
+#include "miniCSyntactic.tab.h" /*PENDIENTE CAMBIAR A .tab*/
 #define MAX_INTEGER 2147483648
 int in_range();
 %}

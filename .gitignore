@@ -1,7 +1,7 @@
 main_OLD_DELETE.c
 .gitattributes
 make/
-miniC
+miniCCompiler
 
 # Prerequisites
 *.d
@@ -38,3 +38,4 @@ miniC
 
 # Mac OS #
 .DS_Store
+
