@@ -1,4 +1,4 @@
- 
+
 /* miniC.l */
 /* Created by Antonio L—pez Toboso and Mercedes L—pez Caballero on 14/2/24. */
 
@@ -49,7 +49,9 @@ read										return READ;
 
 ({letra}|_)({letra}|{digito}|_){0,31}       {yylval.cad = strdup(yytext); return ID;}
 ({letra}|_)({letra}|{digito}|_)*            {fprintf(stderr, "Linea %d: Error: ID (%s) excede el tama–o permitido.\n", yylineno, yytext); yylval.cad = strdup(yytext); return ID;};
+
 {entero}                                    {yylval.cad = strdup(yytext); return in_range();}
+
 \"([^"\n]|\\.)*\"							{yylval.cad = strdup(yytext); return STRING;}
 
 {panico}									{fprintf(stderr, "Linea %d: Error: Caracter (%s) no permitido.\n",yylineno, yytext);}
