@@ -8,6 +8,8 @@
 int in_range();
 %}
 
+%option yylineno 
+
 %s comm
 
 digito              [0-9]
