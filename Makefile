@@ -2,8 +2,8 @@
 # MAKEFILE
 # Created by Antonio López Toboso and Mercedes López Caballero on 14/2/24.
 
-miniCCompiler: lex.yy.c main.c miniCSyntactic.tab.c miniCSyntactic.tab.h
-	gcc-13 main.c make/lex.yy.c make/miniCSyntactic.tab.c -ll -o miniCCompiler
+miniCCompiler: lex.yy.c main.c miniCSyntactic.tab.c miniCSyntactic.tab.h ./Semantic/miniCSymbolTable.h ./Semantic/miniCSymbolTable.c
+	gcc-13 main.c make/lex.yy.c make/miniCSyntactic.tab.c ./Semantic/miniCSymbolTable.c -ll -o miniCCompiler
 
 lex.yy.c: ./Lexical/miniCLexical.l
 	flex -o make/lex.yy.c ./Lexical/miniCLexical.l

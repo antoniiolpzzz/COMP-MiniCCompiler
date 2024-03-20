@@ -8,16 +8,23 @@
 	extern int yylex();
 	extern int yylineno;
 	extern char * yytext;
+	
+	#include "../Semantic/miniCSymbolTable.h"
+	Lista symbolTable;
+	int stringCount;
+	Tipo tipo;
 %}
 
 %union{
+	//char * cad;
 	char * cad;
 }
 
 %token VAR CONST IF ELSE WHILE PRINT READ
 %token SEMICOLON COMMA PLUSOP MINUSOP TIMES
 %token DIV EQUALS LPAR RPAR LKEY RKEY
-%token <cad> ID NUMBER STRING
+//%token <cad> ID NUMBER STRING
+%token <cad> STRING ID NUMBER
 
 %left PLUSOP MINUSOP
 %left DIV TIMES
