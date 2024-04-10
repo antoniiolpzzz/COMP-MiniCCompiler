@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <ctype.h>
 
 struct PosicionListaRep {
   Simbolo dato;
@@ -90,3 +91,55 @@ PosicionLista siguienteLS(Lista lista, PosicionLista p) {
   assert(p != lista->ultimo);
   return p->sig;
 }
+
+
+//NUESTRO
+
+
+void añadeEntrada(Lista lista, char * simbolo, Tipo t){
+
+  Simbolo entrada;
+  
+//switch(t) {
+//  case CADENA:
+//    
+//    break;
+//  
+//  default:
+  entrada.nombre = simbolo;
+  entrada.tipo = t;
+  entrada.valor = 0;
+    insertaLS(lista, lista->ultimo, entrada);
+//    break;
+//}
+}
+
+void añadeEntradaCadena(Lista lista, char * simbolo, int numeroCadenas){
+  
+  Simbolo entrada;
+  //PUEDE SER QUE QUEDE PENDIENTE MODIFICAR LA CADENA
+  //QUITAR COMILLAS O AÑADIR SALTO DE LINEA
+  entrada.nombre = strdup(simbolo);
+  entrada.tipo = CADENA;
+  entrada.valor = numeroCadenas;
+  
+  numeroCadenas++;
+  
+  
+}
+
+
+int esConstante(Lista lista, char * simbolo){
+  
+  PosicionLista p = buscaLS(lista, simbolo);
+  
+  if ( p != lista->ultimo){
+    
+    Simbolo recuperado = recuperaLS(lista, p);
+    return CONSTANTE == recuperado.tipo;
+    
+  }else {
+    return 0;
+  }
+}
+  

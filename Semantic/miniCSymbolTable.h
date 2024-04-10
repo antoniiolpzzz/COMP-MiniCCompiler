@@ -1,7 +1,12 @@
 #ifndef __MINIC_SYMBOL_TABLE__
 #define __MINIC_SYMBOL_TABLE__
 
-typedef enum { VARIABLE = 1, CONSTANTE = 2, CADENA = 3 } Tipo; 
+typedef enum { 
+  VARIABLE = 1,
+  CONSTANTE = 2,
+  CADENA = 3 
+} Tipo;
+
 typedef struct Nodo {
   char *nombre;
   Tipo tipo;
@@ -21,10 +26,13 @@ PosicionLista inicioLS(Lista lista);
 PosicionLista finalLS(Lista lista);
 PosicionLista siguienteLS(Lista lista, PosicionLista p);
 
+
+void añadeEntrada(Lista lista, char * simbolo, Tipo t);
+void añadeEntradaCadena(Lista lista, char * simbolo, int numeroCadenas);
+int esConstante(Lista lista, char * simbolo);
+
 //Pending
 void imprimirTablaS();
 int perteneceTS();
-int añadeEntrada();
-int esConstante();
 
 #endif

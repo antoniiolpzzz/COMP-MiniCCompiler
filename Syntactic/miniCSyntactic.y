@@ -12,11 +12,11 @@
 	#include "../Semantic/miniCSymbolTable.h"
 	Lista symbolTable;
 	int stringCount;
-	Tipo tipo;
+	Tipo symbolType;
 %}
 
 %union{
-	//char * cad;
+	
 	char * cad;
 }
 
