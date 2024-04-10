@@ -1,9 +1,9 @@
 
-/* miniC.l */
+/* miniCLexical.l */
 /* Created by Antonio L—pez Toboso and Mercedes L—pez Caballero on 14/2/24. */
 
 %{
-#include "miniCSyntactic.tab.h" /*PENDIENTE CAMBIAR A .tab*/
+#include "../Syntactic/miniCSyntactic.tab.h"
 #define MAX_INTEGER 2147483648
 int in_range();
 %}

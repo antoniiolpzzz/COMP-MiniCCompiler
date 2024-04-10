@@ -16,7 +16,6 @@
 %}
 
 %union{
-	
 	char * cad;
 }
 

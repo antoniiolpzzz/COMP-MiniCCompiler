@@ -27,12 +27,11 @@ PosicionLista finalLS(Lista lista);
 PosicionLista siguienteLS(Lista lista, PosicionLista p);
 
 
-void añadeEntrada(Lista lista, char * simbolo, Tipo t);
-void añadeEntradaCadena(Lista lista, char * simbolo, int numeroCadenas);
-int esConstante(Lista lista, char * simbolo);
-
 //Pending
 void imprimirTablaS();
 int perteneceTS();
+void añadeEntrada(Lista lista, char * simbolo, Tipo t);
+void añadeEntradaCadena(Lista lista, char * simbolo, int numeroCadenas);
+int esConstante(Lista lista, char * simbolo);
 
 #endif
