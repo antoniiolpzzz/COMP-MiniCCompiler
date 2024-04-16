@@ -4,26 +4,28 @@
 
 %{
 	#include <stdio.h>
-	void yyerror();
+	void yyerror(const char *s);
 	extern int yylex();
 	extern int yylineno;
 	extern char * yytext;
 	
 	#include "../Semantic/miniCSymbolTable.h"
 	Lista symbolTable;
-	int stringCount;
 	Tipo symbolType;
+	int stringCount = 0;
+	
+	void añadeEntrada(Lista lista, char * simbolo, Tipo tipo);
 %}
 
 %union{
-	char * cad;
+	char * str;
 }
 
 %token VAR CONST IF ELSE WHILE PRINT READ
 %token SEMICOLON COMMA PLUSOP MINUSOP TIMES
 %token DIV EQUALS LPAR RPAR LKEY RKEY
-//%token <cad> ID NUMBER STRING
-%token <cad> STRING ID NUMBER
+//%token <str> ID NUMBER STRING
+%token <str> STRING ID NUMBER
 
 %left PLUSOP MINUSOP
 %left DIV TIMES
@@ -31,60 +33,89 @@
 
 %%
 
-program			:	ID LPAR RPAR LKEY declarations statement_list RKEY	{printf("program -> ID LPAR RPAR LKEY declarations statement_list RKEY\n")}
+program			:	{symbolTable = creaLS();} ID LPAR RPAR LKEY declarations statement_list RKEY { imprimirTablaS(symbolTable); liberaLS(symbolTable); }
 				;
 
-declarations		:														{printf("declarations -> LAMBDA\n");}
-				|	declarations VAR identifier_list SEMICOLON			{printf("declarations -> declarations VAR identifier_list SEMICOLON\n");}
-				|	declarations CONST identifier_list SEMICOLON		{printf("declarations -> declarations CONST identifier_list SEMICOLON\n");}
+declarations		:
+				|	declarations VAR { symbolType = VARIABLE; } identifier_list SEMICOLON
+				|	declarations CONST { symbolType = CONSTANTE; } identifier_list SEMICOLON
 				;
 			
-identifier_list :	identifier											{printf("identifier_list -> identifier\n");}
-				|	identifier_list COMMA identifier					{printf("identifier_list -> identifier_list COMMA identifier\n");}
+identifier_list :	identifier											
+				|	identifier_list COMMA identifier					
 				;
 
-identifier		:	ID													{printf("identifier -> ID\n");}
-				| 	ID EQUALS expression								{printf("identifier -> ID EQUALS expression\n");}
+identifier		:	ID													{if (!perteneceTS(symbolTable, $1)) añadeEntrada(symbolTable, $1, symbolType); else printf("Error en linea %d: Variable %s ya declarada\n", yylineno, $1); }
+
+				| 	ID EQUALS expression								{if (!perteneceTS(symbolTable, $1)) añadeEntrada(symbolTable, $1, symbolType); else printf("Error en linea %d: Variable %s ya declarada\n", yylineno, $1); }
 				;
 			
-statement_list	:														{printf("statement_list -> LAMBDA\n");}
-				|	statement_list statement							{printf("statement_list -> statement_list statement\n");}
+statement_list	:														
+				|	statement_list statement							
 				;
 
-statement		:	ID EQUALS expression SEMICOLON						{printf("statement -> ID EQUALS expression SEMICOLON\n");}
-				|	LKEY statement_list RKEY							{printf("statement -> LKEY statement_list RKEY\n");}
-				|	IF LPAR expression RPAR statement ELSE statement		{printf("statement -> IF LPAR expression RPAR statement ELSE statement\n");}
-				|	IF LPAR expression RPAR statement					{printf("statement -> IF LPAR expression RPAR statement\n");}
-				|	WHILE LPAR expression RPAR statement				{printf("statement -> WHILE LPAR expression RPAR statement\n");}
-				|	PRINT LPAR print_list RPAR SEMICOLON				{printf("statement -> PRINT LPAR print_list RPAR SEMICOLON\n");}
-				|	READ LPAR read_list RPAR SEMICOLON					{printf("statement -> READ LPAR read_list RPAR SEMICOLON\n");}
+statement		:	ID EQUALS expression SEMICOLON						{ if (!perteneceTS(symbolTable, $1)) printf("Error en linea %d: Variable %s no declarada\n", yylineno, $1); else if (esConstante(symbolTable,$1)) printf("Error en linea %d: %s es constante\n", yylineno, $1); }
+				|	LKEY statement_list RKEY							
+				|	IF LPAR expression RPAR statement ELSE statement		
+				|	IF LPAR expression RPAR statement					
+				|	WHILE LPAR expression RPAR statement				
+				|	PRINT LPAR print_list RPAR SEMICOLON				
+				|	READ LPAR read_list RPAR SEMICOLON					
 				;
 				
-print_list		:	print_item											{printf("print_list -> print_item\n");}
-				|	print_list COMMA print_item							{printf("print_list -> print_list COMMA print_item\n");}
+print_list		:	print_item											
+				|	print_list COMMA print_item							
 				;
 				
-print_item		:	expression											{printf("print_item -> expression\n");}
-				|	STRING												{printf("print_item -> STRING\n");}
+print_item		:	expression											
+				|	STRING												{ añadeEntrada(symbolTable, $1, CADENA); }
 				;
 				
-read_list		:	ID													{printf("read_list -> ID\n");}
-				|	read_list COMMA ID									{printf("read_list -> read_list COMMA ID\n");}
+read_list		:	ID													{ if (!perteneceTS(symbolTable, $1)) printf("Error en linea %d: Variable %s no declarada\n", yylineno, $1); else if (esConstante(symbolTable,$1)) printf("Error en linea %d: %s es constante\n", yylineno, $1); }
+				|	read_list COMMA ID									{ if (!perteneceTS(symbolTable, $3)) printf("Error en linea %d: Variable %s no declarada\n", yylineno, $3); else if (esConstante(symbolTable,$3)) printf("Error en linea %d: %s es constante\n", yylineno, $3); }
 				;
 				
-expression		:	expression PLUSOP expression						{printf("expression -> expression PLUSOP expression\n");}
-				|	expression MINUSOP expression						{printf("expression -> expression MINUSOP expression\n");}
-				|	expression TIMES expression							{printf("expression -> expression TIMES expression\n");}
-				|	expression DIV expression							{printf("expression -> expression DIV expression\n");}
-				|	MINUSOP expression %prec UMINUS						{printf("expression -> MINUSOP expression %prec UMINUS\n");}
-				|	LPAR expression RPAR								{printf("expression -> LPAR expression RPAR\n");}
-				|	ID													{printf("expression -> ID\n");}
-				|	NUMBER												{printf("expression -> NUMBER\n");}
+expression		:	expression PLUSOP expression						
+				|	expression MINUSOP expression						
+				|	expression TIMES expression							
+				|	expression DIV expression							
+				|	MINUSOP expression %prec UMINUS						
+				|	LPAR expression RPAR								
+				|	ID													{ if (!perteneceTS(symbolTable, $1)) printf("Error en linea %d: Variable %s no declarada\n", yylineno, $1); }
+				|	NUMBER												
 				;
 				
 %%
 
-void yyerror(){
+void yyerror(const char *s){
 	
 	printf("Error sintáctico (línea %d): (yyerror) %s \n", yylineno, yytext);
+	printf("Error sintáctico (línea %d): (yyerror) %s \n", yylineno, s);
+}
+
+
+void añadeEntrada(Lista lista, char * simbolo, Tipo tipo){
+	
+	Simbolo entrada;
+	
+	switch(tipo) {
+		case CADENA:
+			//PUEDE SER QUE QUEDE PENDIENTE MODIFICAR LA CADENA
+			//QUITAR COMILLAS O AÑADIR SALTO DE LINEA
+			entrada.nombre = strdup(simbolo);
+			entrada.tipo = CADENA;
+			entrada.valor = stringCount;
+			
+			insertaLS(lista, finalLS(lista), entrada);
+			stringCount++;
+			break;
+		
+		default:
+			entrada.nombre = simbolo;
+			entrada.tipo = tipo;
+			entrada.valor = 0;
+			
+			insertaLS(lista, finalLS(lista), entrada);
+			break;
+	}
 }

@@ -92,9 +92,9 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 18 "Syntactic/miniCSyntactic.y"
+#line 20 "Syntactic/miniCSyntactic.y"
 {
-	char * cad;
+	char * str;
 }
 /* Line 1529 of yacc.c.  */
 #line 101 "Syntactic/miniCSyntactic.tab.h"

@@ -3,6 +3,7 @@
 #include <string.h>
 #include <assert.h>
 #include <ctype.h>
+#include <stdio.h>
 
 struct PosicionListaRep {
   Simbolo dato;
@@ -95,36 +96,11 @@ PosicionLista siguienteLS(Lista lista, PosicionLista p) {
 
 //NUESTRO
 
-
-void añadeEntrada(Lista lista, char * simbolo, Tipo t){
-
-  Simbolo entrada;
+int perteneceTS(Lista lista, char * simbolo){
   
-//switch(t) {
-//  case CADENA:
-//    
-//    break;
-//  
-//  default:
-  entrada.nombre = simbolo;
-  entrada.tipo = t;
-  entrada.valor = 0;
-    insertaLS(lista, lista->ultimo, entrada);
-//    break;
-//}
-}
-
-void añadeEntradaCadena(Lista lista, char * simbolo, int numeroCadenas){
+  PosicionLista encontrado = buscaLS(lista, simbolo);
   
-  Simbolo entrada;
-  //PUEDE SER QUE QUEDE PENDIENTE MODIFICAR LA CADENA
-  //QUITAR COMILLAS O AÑADIR SALTO DE LINEA
-  entrada.nombre = strdup(simbolo);
-  entrada.tipo = CADENA;
-  entrada.valor = numeroCadenas;
-  
-  numeroCadenas++;
-  
+  return finalLS(lista) != encontrado;
   
 }
 
@@ -133,7 +109,7 @@ int esConstante(Lista lista, char * simbolo){
   
   PosicionLista p = buscaLS(lista, simbolo);
   
-  if ( p != lista->ultimo){
+  if ( p != finalLS(lista)){
     
     Simbolo recuperado = recuperaLS(lista, p);
     return CONSTANTE == recuperado.tipo;
@@ -142,4 +118,41 @@ int esConstante(Lista lista, char * simbolo){
     return 0;
   }
 }
+
+
+
+void imprimirTablaS(Lista lista){
   
+  printf("\t.data\n");
+  printf("\n");
+  // Impresion de cadenas en la cabecera
+  PosicionLista auxP = inicioLS(lista);
+  
+  while (auxP != finalLS(lista)) {
+    
+    Simbolo auxS = recuperaLS(lista, auxP);
+    
+    if (CADENA == auxS.tipo) {
+      printf("$str%d:\n", auxS.valor+1);
+      printf("\t.asciiz %s\n", auxS.nombre);
+    }
+    
+    auxP = siguienteLS(lista, auxP);
+  }
+  
+  //Impresion de variables y constantes en la cabecera
+  auxP = inicioLS(lista);
+  
+  while (auxP != finalLS(lista)) {
+    
+    Simbolo auxCV = recuperaLS(lista, auxP);
+    
+    if (CONSTANTE == auxCV.tipo | VARIABLE == auxCV.tipo) {
+      printf("_%s:\n", auxCV.nombre);
+      printf("\t.word 0\n");
+    }
+    
+    auxP = siguienteLS(lista, auxP);
+  }
+  printf("\n");
+}

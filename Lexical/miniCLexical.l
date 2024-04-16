@@ -49,12 +49,12 @@ read										return READ;
 "{"											return LKEY;
 "}"											return RKEY;
 
-({letra}|_)({letra}|{digito}|_){0,31}       {yylval.cad = strdup(yytext); return ID;}
-({letra}|_)({letra}|{digito}|_)*            {fprintf(stderr, "Linea %d: Error: ID (%s) excede el tama–o permitido.\n", yylineno, yytext); yylval.cad = strdup(yytext); return ID;};
+({letra}|_)({letra}|{digito}|_){0,31}       {yylval.str = strdup(yytext); return ID;}
+({letra}|_)({letra}|{digito}|_)*            {fprintf(stderr, "Linea %d: Error: ID (%s) excede el tama–o permitido.\n", yylineno, yytext); yylval.str = strdup(yytext); return ID;};
 
-{entero}                                    {yylval.cad = strdup(yytext); return in_range();}
+{entero}                                    {yylval.str = strdup(yytext); return in_range();}
 
-\"([^"\n]|\\.)*\"							{yylval.cad = strdup(yytext); return STRING;}
+\"([^"\n]|\\.)*\"							{yylval.str = strdup(yytext); return STRING;}
 
 {panico}									{fprintf(stderr, "Linea %d: Error: Caracter (%s) no permitido.\n",yylineno, yytext);}
 

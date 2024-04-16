@@ -1269,22 +1269,22 @@ return RKEY;
 case 25:
 YY_RULE_SETUP
 #line 53 "Lexical/miniCLexical.l"
-{yylval.cad = strdup(yytext); return ID;}
+{yylval.str = strdup(yytext); return ID;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 54 "Lexical/miniCLexical.l"
-{fprintf(stderr, "Linea %d: Error: ID (%s) excede el tama–o permitido.\n", yylineno, yytext); yylval.cad = strdup(yytext); return ID;};
+{fprintf(stderr, "Linea %d: Error: ID (%s) excede el tama–o permitido.\n", yylineno, yytext); yylval.str = strdup(yytext); return ID;};
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 56 "Lexical/miniCLexical.l"
-{yylval.cad = strdup(yytext); return in_range();}
+{yylval.str = strdup(yytext); return in_range();}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 58 "Lexical/miniCLexical.l"
-{yylval.cad = strdup(yytext); return STRING;}
+{yylval.str = strdup(yytext); return STRING;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
