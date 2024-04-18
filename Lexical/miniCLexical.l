@@ -3,6 +3,7 @@
 /* Created by Antonio L—pez Toboso and Mercedes L—pez Caballero on 14/2/24. */
 
 %{
+#include "../Semantic/miniCCodeList.h"
 #include "../Syntactic/miniCSyntactic.tab.h"
 #define MAX_INTEGER 2147483648
 int in_range();

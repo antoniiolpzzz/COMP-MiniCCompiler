@@ -133,7 +133,7 @@ void imprimirTablaS(Lista lista){
     Simbolo auxS = recuperaLS(lista, auxP);
     
     if (CADENA == auxS.tipo) {
-      printf("$str%d:\n", auxS.valor+1);
+      printf("$str%d:\n", auxS.valor);
       printf("\t.asciiz %s\n", auxS.nombre);
     }
     

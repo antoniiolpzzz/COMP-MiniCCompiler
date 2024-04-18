@@ -845,12 +845,13 @@ char *yytext;
 /* miniCLexical.l */
 /* Created by Antonio L—pez Toboso and Mercedes L—pez Caballero on 14/2/24. */
 #line 6 "Lexical/miniCLexical.l"
+#include "../Semantic/miniCCodeList.h"
 #include "../Syntactic/miniCSyntactic.tab.h"
 #define MAX_INTEGER 2147483648
 int in_range();
-#line 851 "Lexical/lex.yy.c"
+#line 852 "Lexical/lex.yy.c"
 
-#line 853 "Lexical/lex.yy.c"
+#line 854 "Lexical/lex.yy.c"
 
 #define INITIAL 0
 #define comm 1
@@ -1068,12 +1069,12 @@ YY_DECL
 		}
 
 	{
-#line 20 "Lexical/miniCLexical.l"
+#line 21 "Lexical/miniCLexical.l"
 
 
-#line 23 "Lexical/miniCLexical.l"
+#line 24 "Lexical/miniCLexical.l"
 		/* COMENTARIOS Y MULTILINEA*/
-#line 1076 "Lexical/lex.yy.c"
+#line 1077 "Lexical/lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1142,161 +1143,161 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 24 "Lexical/miniCLexical.l"
+#line 25 "Lexical/miniCLexical.l"
 BEGIN comm;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 25 "Lexical/miniCLexical.l"
+#line 26 "Lexical/miniCLexical.l"
 BEGIN 0;
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 26 "Lexical/miniCLexical.l"
+#line 27 "Lexical/miniCLexical.l"
 ;
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 27 "Lexical/miniCLexical.l"
+#line 28 "Lexical/miniCLexical.l"
 ;
 	YY_BREAK
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
-#line 28 "Lexical/miniCLexical.l"
+#line 29 "Lexical/miniCLexical.l"
 ;
 	YY_BREAK
 /* PALABRAS RESERVADAS*/
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 31 "Lexical/miniCLexical.l"
+#line 32 "Lexical/miniCLexical.l"
 ;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 32 "Lexical/miniCLexical.l"
+#line 33 "Lexical/miniCLexical.l"
 return VAR;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 33 "Lexical/miniCLexical.l"
+#line 34 "Lexical/miniCLexical.l"
 return CONST;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 34 "Lexical/miniCLexical.l"
+#line 35 "Lexical/miniCLexical.l"
 return IF;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 35 "Lexical/miniCLexical.l"
+#line 36 "Lexical/miniCLexical.l"
 return ELSE;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 36 "Lexical/miniCLexical.l"
+#line 37 "Lexical/miniCLexical.l"
 return WHILE;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 37 "Lexical/miniCLexical.l"
+#line 38 "Lexical/miniCLexical.l"
 return PRINT;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 38 "Lexical/miniCLexical.l"
+#line 39 "Lexical/miniCLexical.l"
 return READ;
 	YY_BREAK
 /* CARACTERES ESPECIALES*/
 case 14:
 YY_RULE_SETUP
-#line 41 "Lexical/miniCLexical.l"
+#line 42 "Lexical/miniCLexical.l"
 return SEMICOLON;
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 42 "Lexical/miniCLexical.l"
+#line 43 "Lexical/miniCLexical.l"
 return COMMA;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 43 "Lexical/miniCLexical.l"
+#line 44 "Lexical/miniCLexical.l"
 return PLUSOP;
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 44 "Lexical/miniCLexical.l"
+#line 45 "Lexical/miniCLexical.l"
 return MINUSOP;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 45 "Lexical/miniCLexical.l"
+#line 46 "Lexical/miniCLexical.l"
 return TIMES;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 46 "Lexical/miniCLexical.l"
+#line 47 "Lexical/miniCLexical.l"
 return DIV;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 47 "Lexical/miniCLexical.l"
+#line 48 "Lexical/miniCLexical.l"
 return EQUALS;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 48 "Lexical/miniCLexical.l"
+#line 49 "Lexical/miniCLexical.l"
 return LPAR;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 49 "Lexical/miniCLexical.l"
+#line 50 "Lexical/miniCLexical.l"
 return RPAR;
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 50 "Lexical/miniCLexical.l"
+#line 51 "Lexical/miniCLexical.l"
 return LKEY;
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 51 "Lexical/miniCLexical.l"
+#line 52 "Lexical/miniCLexical.l"
 return RKEY;
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 53 "Lexical/miniCLexical.l"
+#line 54 "Lexical/miniCLexical.l"
 {yylval.str = strdup(yytext); return ID;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 54 "Lexical/miniCLexical.l"
+#line 55 "Lexical/miniCLexical.l"
 {fprintf(stderr, "Linea %d: Error: ID (%s) excede el tama–o permitido.\n", yylineno, yytext); yylval.str = strdup(yytext); return ID;};
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 56 "Lexical/miniCLexical.l"
+#line 57 "Lexical/miniCLexical.l"
 {yylval.str = strdup(yytext); return in_range();}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 58 "Lexical/miniCLexical.l"
+#line 59 "Lexical/miniCLexical.l"
 {yylval.str = strdup(yytext); return STRING;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 60 "Lexical/miniCLexical.l"
+#line 61 "Lexical/miniCLexical.l"
 {fprintf(stderr, "Linea %d: Error: Caracter (%s) no permitido.\n",yylineno, yytext);}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 62 "Lexical/miniCLexical.l"
+#line 63 "Lexical/miniCLexical.l"
 ECHO;
 	YY_BREAK
-#line 1299 "Lexical/lex.yy.c"
+#line 1300 "Lexical/lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(comm):
 	yyterminate();
@@ -2314,7 +2315,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 62 "Lexical/miniCLexical.l"
+#line 63 "Lexical/miniCLexical.l"
 
 
 int in_range(){

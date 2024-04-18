@@ -8,9 +8,9 @@ SEM_DIR := Semantic
 GEN_DIR := makeTmp
 
 
-miniCCompiler: $(LEX_DIR)/lex.yy.c miniCCompilerMain.c $(SYN_DIR)/miniCSyntactic.tab.c $(SYN_DIR)/miniCSyntactic.tab.h $(SEM_DIR)/miniCSymbolTable.h $(SEM_DIR)/miniCSymbolTable.c $(SEM_DIR)/miniCSymbolTable.h
+miniCCompiler: $(LEX_DIR)/lex.yy.c miniCCompilerMain.c $(SYN_DIR)/miniCSyntactic.tab.h $(SYN_DIR)/miniCSyntactic.tab.c $(SEM_DIR)/miniCSymbolTable.h $(SEM_DIR)/miniCSymbolTable.c $(SEM_DIR)/miniCCodeList.h $(SEM_DIR)/miniCCodeList.c
 
-	gcc-13 miniCCompilerMain.c $(LEX_DIR)/lex.yy.c $(SYN_DIR)/miniCSyntactic.tab.c $(SEM_DIR)/miniCSymbolTable.c -ll -o miniCCompiler
+	gcc-13 miniCCompilerMain.c $(LEX_DIR)/lex.yy.c $(SYN_DIR)/miniCSyntactic.tab.c $(SEM_DIR)/miniCSymbolTable.c $(SEM_DIR)/miniCCodeList.c -ll -o miniCCompiler
 
 
 $(LEX_DIR)/lex.yy.c: $(LEX_DIR)/miniCLexical.l $(SYN_DIR)/miniCSyntactic.tab.h
