@@ -133,17 +133,19 @@
 	
 	#include "../Semantic/miniCCodeList.h"
 	int registers[MAX_REGISTERS] = {0};
-	
-	void liberarReg(char * registro);
-	char * obtenerReg();
-	void imprimirCodigo(ListaC codigo);
+	int labelCount = 0;
 	
 	#include "../Semantic/miniCSymbolTable.h"
 	Lista symbolTable;
 	Tipo symbolType;
 	int stringCount = 0;
 	
+	void imprimirCodigo(ListaC codigo);
+	void liberarReg(char * registro);
 	void añadeEntrada(Lista lista, char * simbolo, Tipo tipo);
+	char * obtenerReg();
+	char * newLabel();
+	char * concatenaStr(char * str0, char * str1);
 	
 
 
@@ -167,13 +169,13 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 34 "Syntactic/miniCSyntactic.y"
+#line 36 "Syntactic/miniCSyntactic.y"
 {
 	char * str;
 	ListaC cod;
 }
 /* Line 193 of yacc.c.  */
-#line 177 "Syntactic/miniCSyntactic.tab.c"
+#line 179 "Syntactic/miniCSyntactic.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -186,7 +188,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 190 "Syntactic/miniCSyntactic.tab.c"
+#line 192 "Syntactic/miniCSyntactic.tab.c"
 
 #ifdef short
 # undef short
@@ -482,12 +484,12 @@ static const yytype_int8 yyrhs[] =
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
-static const yytype_uint8 yyrline[] =
+static const yytype_uint16 yyrline[] =
 {
-       0,    53,    53,    53,    56,    57,    57,    58,    58,    61,
-      62,    65,    67,    70,    71,    74,    86,    87,    88,    89,
-      90,    91,    94,    95,    98,    99,   103,   105,   109,   120,
-     131,   142,   153,   161,   163,   173
+       0,    54,    54,    54,    57,    59,    59,    64,    64,    70,
+      72,    78,    84,    99,   101,   107,   123,   125,   164,   186,
+     225,   228,   231,   233,   239,   262,   290,   315,   342,   354,
+     366,   378,   390,   402,   404,   414
 };
 #endif
 
@@ -1439,67 +1441,366 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 53 "Syntactic/miniCSyntactic.y"
+#line 54 "Syntactic/miniCSyntactic.y"
     {symbolTable = creaLS();;}
     break;
 
   case 3:
-#line 53 "Syntactic/miniCSyntactic.y"
-    { imprimirTablaS(symbolTable); liberaLS(symbolTable); ;}
+#line 54 "Syntactic/miniCSyntactic.y"
+    { imprimirTablaS(symbolTable); concatenaLC((yyvsp[(6) - (8)].cod), (yyvsp[(7) - (8)].cod)); imprimirCodigo((yyvsp[(6) - (8)].cod)); liberaLS(symbolTable); liberaLC((yyvsp[(6) - (8)].cod)); ;}
+    break;
+
+  case 4:
+#line 57 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = creaLC(); ;}
     break;
 
   case 5:
-#line 57 "Syntactic/miniCSyntactic.y"
+#line 59 "Syntactic/miniCSyntactic.y"
     { symbolType = VARIABLE; ;}
     break;
 
+  case 6:
+#line 59 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = (yyvsp[(1) - (5)].cod);
+																							concatenaLC((yyval.cod), (yyvsp[(4) - (5)].cod));
+																							liberaLC((yyvsp[(4) - (5)].cod));
+																						;}
+    break;
+
   case 7:
-#line 58 "Syntactic/miniCSyntactic.y"
+#line 64 "Syntactic/miniCSyntactic.y"
     { symbolType = CONSTANTE; ;}
     break;
 
+  case 8:
+#line 64 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = (yyvsp[(1) - (5)].cod);
+																								concatenaLC((yyval.cod), (yyvsp[(4) - (5)].cod));
+																								liberaLC((yyvsp[(4) - (5)].cod));
+																							;}
+    break;
+
+  case 9:
+#line 70 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = (yyvsp[(1) - (1)].cod); ;}
+    break;
+
+  case 10:
+#line 72 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = (yyvsp[(1) - (3)].cod);
+																		concatenaLC((yyval.cod), (yyvsp[(3) - (3)].cod));
+																		liberaLC((yyvsp[(3) - (3)].cod));
+																	;}
+    break;
+
   case 11:
-#line 65 "Syntactic/miniCSyntactic.y"
-    {if (!perteneceTS(symbolTable, (yyvsp[(1) - (1)].str))) añadeEntrada(symbolTable, (yyvsp[(1) - (1)].str), symbolType); else printf("Error en linea %d: Variable %s ya declarada\n", yylineno, (yyvsp[(1) - (1)].str)); ;}
+#line 78 "Syntactic/miniCSyntactic.y"
+    {if (!perteneceTS(symbolTable, (yyvsp[(1) - (1)].str))) añadeEntrada(symbolTable, (yyvsp[(1) - (1)].str), symbolType); else printf("Error en linea %d: Variable %s ya declarada\n", yylineno, (yyvsp[(1) - (1)].str));
+	
+																		(yyval.cod) = creaLC(); 
+																		
+																	;}
     break;
 
   case 12:
-#line 67 "Syntactic/miniCSyntactic.y"
-    {if (!perteneceTS(symbolTable, (yyvsp[(1) - (3)].str))) añadeEntrada(symbolTable, (yyvsp[(1) - (3)].str), symbolType); else printf("Error en linea %d: Variable %s ya declarada\n", yylineno, (yyvsp[(1) - (3)].str)); ;}
+#line 84 "Syntactic/miniCSyntactic.y"
+    {if (!perteneceTS(symbolTable, (yyvsp[(1) - (3)].str))) añadeEntrada(symbolTable, (yyvsp[(1) - (3)].str), symbolType); else printf("Error en linea %d: Variable %s ya declarada\n", yylineno, (yyvsp[(1) - (3)].str)); 
+																		(yyval.cod) = (yyvsp[(3) - (3)].cod);
+																		
+																		Operacion oper;
+																		
+																		oper.op = "sw";
+																		oper.res = recuperaResLC((yyvsp[(3) - (3)].cod));
+																		oper.arg1 = concatenaStr("_", (yyvsp[(1) - (3)].str));
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																		liberarReg(oper.arg1);
+																		//liberaLC($3); //PUEDE SER QUE ESTO NO SEA CORRECTO VIDEO
+																	;}
+    break;
+
+  case 13:
+#line 99 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = creaLC(); ;}
+    break;
+
+  case 14:
+#line 101 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = (yyvsp[(1) - (2)].cod);
+																		concatenaLC((yyval.cod), (yyvsp[(2) - (2)].cod));
+																		liberaLC((yyvsp[(2) - (2)].cod));
+																	;}
     break;
 
   case 15:
-#line 74 "Syntactic/miniCSyntactic.y"
-    { if (!perteneceTS(symbolTable, (yyvsp[(1) - (4)].str))) printf("Error en linea %d: Variable %s no declarada\n", yylineno, (yyvsp[(1) - (4)].str)); else if (esConstante(symbolTable,(yyvsp[(1) - (4)].str))) printf("Error en linea %d: %s es constante\n", yylineno, (yyvsp[(1) - (4)].str)); 														/*
-																		$$ = $3;
+#line 107 "Syntactic/miniCSyntactic.y"
+    { if (!perteneceTS(symbolTable, (yyvsp[(1) - (4)].str))) printf("Error en linea %d: Variable %s no declarada\n", yylineno, (yyvsp[(1) - (4)].str)); else if (esConstante(symbolTable,(yyvsp[(1) - (4)].str))) printf("Error en linea %d: %s es constante\n", yylineno, (yyvsp[(1) - (4)].str)); 													
+																		
+																		(yyval.cod) = (yyvsp[(3) - (4)].cod);
 																		Operacion oper;
 																		oper.op = "sw";
-																		oper.res = recuperaResLC($3);
-																		sprintf(oper.arg1, "_%s", $1);
+																		oper.res = recuperaResLC((yyvsp[(3) - (4)].cod));
+																		oper.arg1 = concatenaStr("_", (yyvsp[(1) - (4)].str));
 																		oper.arg2 = NULL;
-																		insertaLC($$, finalLC($$), oper);
-																		*/
-																		imprimirCodigo((yyvsp[(3) - (4)].cod));
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																		guardaResLC((yyval.cod), oper.res);
+																		liberarReg(oper.res);
+																		//liberaLC($3); //PUEDE QUE ESTE MAL
+																		
+																		
 																		/*LIBERAR REGISTROS?*/ ;}
     break;
 
+  case 16:
+#line 123 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = (yyvsp[(2) - (3)].cod); ;}
+    break;
+
+  case 17:
+#line 125 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = (yyvsp[(3) - (7)].cod);
+																		char * label_ELSE = newLabel();
+																		char * label_END = newLabel();
+																		
+																		Operacion oper;
+					
+																		oper.op = "beqz";
+																		oper.res = recuperaResLC((yyvsp[(3) - (7)].cod));
+																		oper.arg1 = label_ELSE;
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																		
+																		concatenaLC((yyval.cod), (yyvsp[(5) - (7)].cod));
+																		
+																		oper.op = "b";
+																		oper.res = label_END;
+																		oper.arg1 = NULL;
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																		
+																		oper.op = concatenaStr(label_ELSE, ":");
+																		oper.res = NULL;
+																		oper.arg1 = NULL;
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																		
+																		concatenaLC((yyval.cod), (yyvsp[(7) - (7)].cod));
+																		
+																		oper.op = concatenaStr(label_END, ":");
+																		oper.res = NULL;
+																		oper.arg1 = NULL;
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																		
+																		liberaLC((yyvsp[(5) - (7)].cod)); //COMPROBAR SI HACE FALTA
+																		liberaLC((yyvsp[(7) - (7)].cod)); //COMPROBAR SI HACE FALTA
+																		
+																	;}
+    break;
+
+  case 18:
+#line 164 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = (yyvsp[(3) - (5)].cod);
+																		char * label_END = newLabel();
+																		
+																		Operacion oper;
+																		
+																		oper.op = "beqz";
+																		oper.res = recuperaResLC((yyvsp[(3) - (5)].cod));
+																		oper.arg1 = label_END;
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																		
+																		concatenaLC((yyval.cod), (yyvsp[(5) - (5)].cod));
+																		
+																		oper.op = concatenaStr(label_END, ":");
+																		oper.res = NULL;
+																		oper.arg1 = NULL;
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																		
+																		liberaLC((yyvsp[(5) - (5)].cod)); //COMPROBAR SI HACE FALTA
+																	;}
+    break;
+
+  case 19:
+#line 186 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = creaLC();
+																		char * label_WHILE = newLabel();
+																		char * label_ENDW = newLabel();
+																		
+																		Operacion oper;
+																		
+																		oper.op = concatenaStr(label_WHILE, ":");
+																		oper.res = NULL;
+																		oper.arg1 = NULL;
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																		
+																		concatenaLC((yyval.cod), (yyvsp[(3) - (5)].cod));
+																		
+																		oper.op = "beqz";
+																		oper.res = recuperaResLC((yyvsp[(3) - (5)].cod));
+																		oper.arg1 = label_ENDW;
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																		
+																		concatenaLC((yyval.cod), (yyvsp[(5) - (5)].cod));
+																		
+																		oper.op = "b";
+																		oper.res = label_WHILE;
+																		oper.arg1 = NULL;
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																		
+																		oper.op = concatenaStr(label_ENDW, ":");
+																		oper.res = NULL;
+																		oper.arg1 = NULL;
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																		
+																		liberaLC((yyvsp[(5) - (5)].cod));
+																		liberaLC((yyvsp[(3) - (5)].cod));
+																	;}
+    break;
+
+  case 20:
+#line 225 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = (yyvsp[(3) - (5)].cod); ;}
+    break;
+
+  case 21:
+#line 228 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = (yyvsp[(3) - (5)].cod); ;}
+    break;
+
+  case 22:
+#line 231 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = (yyvsp[(1) - (1)].cod);;}
+    break;
+
+  case 23:
+#line 233 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = (yyvsp[(1) - (3)].cod);
+																		concatenaLC((yyval.cod), (yyvsp[(3) - (3)].cod));
+																		liberaLC((yyvsp[(3) - (3)].cod));
+																	;}
+    break;
+
+  case 24:
+#line 239 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = (yyvsp[(1) - (1)].cod);
+																		Operacion oper;
+																		
+																		oper.op = "li";
+																		oper.res = "$v0";
+																		oper.arg1 = "1";
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																		
+																		oper.op = "move";
+																		oper.res = "$a0";
+																		oper.arg1 = recuperaResLC((yyvsp[(1) - (1)].cod));
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																		liberarReg(oper.arg1);
+																		
+																		oper.op = "syscall";
+																		oper.res = NULL;
+																		oper.arg1 = NULL;
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																	;}
+    break;
+
   case 25:
-#line 99 "Syntactic/miniCSyntactic.y"
-    { añadeEntrada(symbolTable, (yyvsp[(1) - (1)].str), CADENA); ;}
+#line 262 "Syntactic/miniCSyntactic.y"
+    { añadeEntrada(symbolTable, (yyvsp[(1) - (1)].str), CADENA); 
+				
+																		(yyval.cod) = creaLC();
+																		
+																		Operacion oper;
+																		
+																		oper.op = "li";
+																		oper.res = "$v0";
+																		oper.arg1 = "4";
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																		
+																		oper.op = "la";
+																		oper.res = "$a0";
+																		oper.arg1 = concatenaStr("$str", "");
+																		asprintf(&oper.arg1, "%s%d", oper.arg1, stringCount);
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																		
+																		oper.op = "syscall";
+																		oper.res = NULL;
+																		oper.arg1 = NULL;
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																	;}
     break;
 
   case 26:
-#line 103 "Syntactic/miniCSyntactic.y"
-    { if (!perteneceTS(symbolTable, (yyvsp[(1) - (1)].str))) printf("Error en linea %d: Variable %s no declarada\n", yylineno, (yyvsp[(1) - (1)].str)); else if (esConstante(symbolTable,(yyvsp[(1) - (1)].str))) printf("Error en linea %d: %s es constante\n", yylineno, (yyvsp[(1) - (1)].str)); ;}
+#line 290 "Syntactic/miniCSyntactic.y"
+    { if (!perteneceTS(symbolTable, (yyvsp[(1) - (1)].str))) printf("Error en linea %d: Variable %s no declarada\n", yylineno, (yyvsp[(1) - (1)].str)); else if (esConstante(symbolTable,(yyvsp[(1) - (1)].str))) printf("Error en linea %d: %s es constante\n", yylineno, (yyvsp[(1) - (1)].str)); 
+																		(yyval.cod) = creaLC(); /*$1;*/
+																		
+																		Operacion oper;
+																		
+																		oper.op = "li";
+																		oper.res = "$v0";
+																		oper.arg1 = "5";
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																		
+																		oper.op = "syscall";
+																		oper.res = NULL;
+																		oper.arg1 = NULL;
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																		
+																		oper.op = "sw";
+																		oper.res = "$v0";
+																		oper.arg1 = concatenaStr("_", (yyvsp[(1) - (1)].str));
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+
+;}
     break;
 
   case 27:
-#line 105 "Syntactic/miniCSyntactic.y"
-    { if (!perteneceTS(symbolTable, (yyvsp[(3) - (3)].str))) printf("Error en linea %d: Variable %s no declarada\n", yylineno, (yyvsp[(3) - (3)].str)); else if (esConstante(symbolTable,(yyvsp[(3) - (3)].str))) printf("Error en linea %d: %s es constante\n", yylineno, (yyvsp[(3) - (3)].str)); ;}
+#line 315 "Syntactic/miniCSyntactic.y"
+    { if (!perteneceTS(symbolTable, (yyvsp[(3) - (3)].str))) printf("Error en linea %d: Variable %s no declarada\n", yylineno, (yyvsp[(3) - (3)].str)); else if (esConstante(symbolTable,(yyvsp[(3) - (3)].str))) printf("Error en linea %d: %s es constante\n", yylineno, (yyvsp[(3) - (3)].str)); 
+					
+																		(yyval.cod) = (yyvsp[(1) - (3)].cod);
+					
+																		Operacion oper;
+					
+																		oper.op = "li";
+																		oper.res = "$v0";
+																		oper.arg1 = "5";
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+					
+																		oper.op = "syscall";
+																		oper.res = NULL;
+																		oper.arg1 = NULL;
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+					
+																		oper.op = "sw";
+																		oper.res = "$v0";
+																		oper.arg1 = concatenaStr("_", (yyvsp[(3) - (3)].str));
+																		oper.arg2 = NULL;
+																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																	;}
     break;
 
   case 28:
-#line 109 "Syntactic/miniCSyntactic.y"
+#line 342 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = (yyvsp[(1) - (3)].cod);
 																		concatenaLC((yyval.cod), (yyvsp[(3) - (3)].cod));
 																		Operacion oper;
@@ -1508,12 +1809,13 @@ yyreduce:
 																		oper.arg1 = recuperaResLC((yyvsp[(1) - (3)].cod));
 																		oper.arg2 = recuperaResLC((yyvsp[(3) - (3)].cod));
 																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
-																		//liberaLC($3);
+																		guardaResLC((yyval.cod), oper.res);
+																		liberaLC((yyvsp[(3) - (3)].cod));
 																		liberarReg(oper.arg2); ;}
     break;
 
   case 29:
-#line 120 "Syntactic/miniCSyntactic.y"
+#line 354 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = (yyvsp[(1) - (3)].cod);
 																		concatenaLC((yyval.cod), (yyvsp[(3) - (3)].cod));
 																		Operacion oper;
@@ -1522,12 +1824,13 @@ yyreduce:
 																		oper.arg1 = recuperaResLC((yyvsp[(1) - (3)].cod));
 																		oper.arg2 = recuperaResLC((yyvsp[(3) - (3)].cod));
 																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
-																		//liberaLC($3);
+																		guardaResLC((yyval.cod), oper.res);
+																		liberaLC((yyvsp[(3) - (3)].cod));
 																		liberarReg(oper.arg2); ;}
     break;
 
   case 30:
-#line 131 "Syntactic/miniCSyntactic.y"
+#line 366 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = (yyvsp[(1) - (3)].cod);
 																		concatenaLC((yyval.cod), (yyvsp[(3) - (3)].cod));
 																		Operacion oper;
@@ -1536,12 +1839,13 @@ yyreduce:
 																		oper.arg1 = recuperaResLC((yyvsp[(1) - (3)].cod));
 																		oper.arg2 = recuperaResLC((yyvsp[(3) - (3)].cod));
 																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
-																		//liberaLC($3);
+																		guardaResLC((yyval.cod), oper.res);
+																		liberaLC((yyvsp[(3) - (3)].cod));
 																		liberarReg(oper.arg2); ;}
     break;
 
   case 31:
-#line 142 "Syntactic/miniCSyntactic.y"
+#line 378 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = (yyvsp[(1) - (3)].cod);
 																		concatenaLC((yyval.cod), (yyvsp[(3) - (3)].cod));
 																		Operacion oper;
@@ -1550,41 +1854,46 @@ yyreduce:
 																		oper.arg1 = recuperaResLC((yyvsp[(1) - (3)].cod));
 																		oper.arg2 = recuperaResLC((yyvsp[(3) - (3)].cod));
 																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
-																		//liberaLC($3);
+																		guardaResLC((yyval.cod), oper.res);
+																		liberaLC((yyvsp[(3) - (3)].cod));
 																		liberarReg(oper.arg2); ;}
     break;
 
   case 32:
-#line 153 "Syntactic/miniCSyntactic.y"
+#line 390 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = (yyvsp[(2) - (2)].cod);
 																		Operacion oper;
 																		oper.op = "neg";
 																		oper.res = recuperaResLC((yyvsp[(2) - (2)].cod));
 																		oper.arg1 = recuperaResLC((yyvsp[(2) - (2)].cod));
+																		oper.arg2 = NULL;
 																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
-																		/*liberarReg(oper.arg1);*/ ;}
+																		guardaResLC((yyval.cod), oper.res);
+																		liberaLC((yyvsp[(2) - (2)].cod));
+																		/*liberarReg(oper.arg1);*/ //PUEDE QUE SOBRE ESTO
+																	;}
     break;
 
   case 33:
-#line 161 "Syntactic/miniCSyntactic.y"
+#line 402 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = (yyvsp[(2) - (3)].cod); ;}
     break;
 
   case 34:
-#line 163 "Syntactic/miniCSyntactic.y"
+#line 404 "Syntactic/miniCSyntactic.y"
     { if (!perteneceTS(symbolTable, (yyvsp[(1) - (1)].str))) printf("Error en linea %d: Variable %s no declarada\n", yylineno, (yyvsp[(1) - (1)].str)); 
 																		(yyval.cod) = creaLC();
 																		Operacion oper;
 																		oper.op = "lw";
 																		oper.res = obtenerReg();
-																		sprintf(oper.arg1, "_%s", (yyvsp[(1) - (1)].str));
+																		oper.arg1 = concatenaStr("_", (yyvsp[(1) - (1)].str));
 																		oper.arg2 = NULL;
 																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
 																		guardaResLC((yyval.cod), oper.res); ;}
     break;
 
   case 35:
-#line 173 "Syntactic/miniCSyntactic.y"
+#line 414 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = creaLC();
 																		Operacion oper;
 																		oper.op = "li";
@@ -1597,7 +1906,7 @@ yyreduce:
 
 
 /* Line 1267 of yacc.c.  */
-#line 1601 "Syntactic/miniCSyntactic.tab.c"
+#line 1910 "Syntactic/miniCSyntactic.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1811,7 +2120,7 @@ yyreturn:
 }
 
 
-#line 184 "Syntactic/miniCSyntactic.y"
+#line 425 "Syntactic/miniCSyntactic.y"
 
 
 void yyerror(const char *s){
@@ -1828,12 +2137,13 @@ void añadeEntrada(Lista lista, char * simbolo, Tipo tipo){
 	switch(tipo) {
 		case CADENA:
 		
+			stringCount++;
 			entrada.nombre = strdup(simbolo);
 			entrada.tipo = CADENA;
 			entrada.valor = stringCount;
 			
 			insertaLS(lista, finalLS(lista), entrada);
-			stringCount++;
+			
 			break;
 		
 		default:
@@ -1845,7 +2155,6 @@ void añadeEntrada(Lista lista, char * simbolo, Tipo tipo){
 			break;
 	}
 }
-
 
 
 
@@ -1864,6 +2173,8 @@ char * obtenerReg(){
 		return NULL;
 }
 
+
+
 void liberarReg(char * registro){
 	
 	char * numeroRegistro = registro + 2;
@@ -1877,10 +2188,27 @@ void liberarReg(char * registro){
 	
 }
 
-void imprimirCodigo(ListaC codigo) { 
+
+
+void imprimirCodigo(ListaC codigo) {
+	
+	printf("##################\n");
+	printf("# Seccion de codigo\n");
+	printf("\t.text\n");
+	printf("\t.globl main\n");
+	printf("main:\n");
+	
 	PosicionListaC p = inicioLC(codigo); 
 	while (p != finalLC(codigo)) {
 		Operacion oper = recuperaLC(codigo,p);
+		char labelCheck[7];
+		strncpy(labelCheck, oper.op, 6);
+		if (strcmp(labelCheck, "$label")){
+			printf("\t");
+		}
+		else{
+			printf("\n");
+		}
 		printf("%s",oper.op);
 		if (oper.res) printf(" %s",oper.res);
 		if (oper.arg1) printf(",%s",oper.arg1);
@@ -1888,4 +2216,23 @@ void imprimirCodigo(ListaC codigo) {
 		printf("\n");
 		p = siguienteLC(codigo,p);
 	}
+	
+	printf("\n##################\n");
+	printf("# Fin de la ejecucion\n");
+	
+	printf("\tli $v0, 10\n");
+	printf("\tsyscall\n");
+}
+
+char * concatenaStr(char * str0, char * str1){
+	
+	char * string;
+	asprintf(&string, "%s%s", str0, str1);
+	return string;
+}
+char * newLabel(){
+	char * label;
+	asprintf(&label, "$label_%d",labelCount++);
+	return label;
+	
 }

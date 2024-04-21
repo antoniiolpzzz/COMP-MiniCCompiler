@@ -21,6 +21,6 @@ $(SYN_DIR)/miniCSyntactic.tab.c $(SYN_DIR)/miniCSyntactic.tab.h: $(SYN_DIR)/mini
 	bison -d -v -o $(SYN_DIR)/miniCSyntactic.tab.c $(SYN_DIR)/miniCSyntactic.y
 
 run: miniCCompiler prueba.mc
-	./miniCCompiler prueba.mc
+	./miniCCompiler prueba.mc > prueba.s
 #rm -f miniCCompiler
 	

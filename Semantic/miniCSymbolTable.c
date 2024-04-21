@@ -123,6 +123,8 @@ int esConstante(Lista lista, char * simbolo){
 
 void imprimirTablaS(Lista lista){
   
+  printf("##################\n");
+  printf("# Seccion de datos\n");
   printf("\t.data\n");
   printf("\n");
   // Impresion de cadenas en la cabecera
@@ -155,4 +157,5 @@ void imprimirTablaS(Lista lista){
     auxP = siguienteLS(lista, auxP);
   }
   printf("\n");
+  
 }

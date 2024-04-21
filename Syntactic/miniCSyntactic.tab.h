@@ -92,7 +92,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 34 "Syntactic/miniCSyntactic.y"
+#line 36 "Syntactic/miniCSyntactic.y"
 {
 	char * str;
 	ListaC cod;
