@@ -40,7 +40,7 @@
 
 %type <cod> expression statement statement_list print_item print_list read_list declarations identifier_list identifier
 
-%token VAR CONST IF ELSE WHILE PRINT READ DO
+%token VAR CONST IF ELSE WHILE PRINT READ
 %token SEMICOLON COMMA PLUSOP MINUSOP TIMES
 %token DIV EQUALS LPAR RPAR LKEY RKEY
 %token <str> STRING ID NUMBER
@@ -182,46 +182,7 @@ statement		:	ID EQUALS expression SEMICOLON						{ if (!perteneceTS(symbolTable,
 																		
 																		liberaLC($5); //COMPROBAR SI HACE FALTA
 																	}
-													
-				|	DO statement WHILE LPAR expression RPAR 			{ $$ = creaLC();
-																		concatenaLC($$, $5);
-																		char * label_DOWHILE = newLabel();
-																		char * label_ENDDW = newLabel();
-					
-																		Operacion oper;
-					
-																		oper.op = concatenaStr(label_DOWHILE, ":");
-																		oper.res = NULL;
-																		oper.arg1 = NULL;
-																		oper.arg2 = NULL;
-																		insertaLC($$, finalLC($$), oper);
-																		
-																		concatenaLC($$, $2);
-																		concatenaLC($$, $5);
-					
-																		oper.op = "beqz";
-																		oper.res = recuperaResLC($5);
-																		oper.arg1 = label_ENDDW;
-																		oper.arg2 = NULL;
-																		insertaLC($$, finalLC($$), oper);
-					
-																							
-																		oper.op = "b";
-																		oper.res = label_DOWHILE;
-																		oper.arg1 = NULL;
-																		oper.arg2 = NULL;
-																		insertaLC($$, finalLC($$), oper);
-					
-																		oper.op = concatenaStr(label_ENDDW, ":");
-																		oper.res = NULL;
-																		oper.arg1 = NULL;
-																		oper.arg2 = NULL;
-																		insertaLC($$, finalLC($$), oper);
-					
-																		liberaLC($5);
-																		liberaLC($2);
-																	}
-													
+				
 				|	WHILE LPAR expression RPAR statement				{ $$ = creaLC();
 																		char * label_WHILE = newLabel();
 																		char * label_ENDW = newLabel();

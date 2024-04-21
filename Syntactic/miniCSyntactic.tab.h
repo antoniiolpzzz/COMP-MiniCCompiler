@@ -46,22 +46,21 @@
      WHILE = 262,
      PRINT = 263,
      READ = 264,
-     DO = 265,
-     SEMICOLON = 266,
-     COMMA = 267,
-     PLUSOP = 268,
-     MINUSOP = 269,
-     TIMES = 270,
-     DIV = 271,
-     EQUALS = 272,
-     LPAR = 273,
-     RPAR = 274,
-     LKEY = 275,
-     RKEY = 276,
-     STRING = 277,
-     ID = 278,
-     NUMBER = 279,
-     UMINUS = 280
+     SEMICOLON = 265,
+     COMMA = 266,
+     PLUSOP = 267,
+     MINUSOP = 268,
+     TIMES = 269,
+     DIV = 270,
+     EQUALS = 271,
+     LPAR = 272,
+     RPAR = 273,
+     LKEY = 274,
+     RKEY = 275,
+     STRING = 276,
+     ID = 277,
+     NUMBER = 278,
+     UMINUS = 279
    };
 #endif
 /* Tokens.  */
@@ -72,22 +71,21 @@
 #define WHILE 262
 #define PRINT 263
 #define READ 264
-#define DO 265
-#define SEMICOLON 266
-#define COMMA 267
-#define PLUSOP 268
-#define MINUSOP 269
-#define TIMES 270
-#define DIV 271
-#define EQUALS 272
-#define LPAR 273
-#define RPAR 274
-#define LKEY 275
-#define RKEY 276
-#define STRING 277
-#define ID 278
-#define NUMBER 279
-#define UMINUS 280
+#define SEMICOLON 265
+#define COMMA 266
+#define PLUSOP 267
+#define MINUSOP 268
+#define TIMES 269
+#define DIV 270
+#define EQUALS 271
+#define LPAR 272
+#define RPAR 273
+#define LKEY 274
+#define RKEY 275
+#define STRING 276
+#define ID 277
+#define NUMBER 278
+#define UMINUS 279
 
 
 
@@ -100,7 +98,7 @@ typedef union YYSTYPE
 	ListaC cod;
 }
 /* Line 1529 of yacc.c.  */
-#line 104 "Syntactic/miniCSyntactic.tab.h"
+#line 102 "Syntactic/miniCSyntactic.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
