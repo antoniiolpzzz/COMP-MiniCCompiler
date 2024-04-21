@@ -36,6 +36,7 @@ else										return ELSE;
 while										return WHILE;
 print										return PRINT;
 read										return READ;
+do											return DO;
 
 		/* CARACTERES ESPECIALES*/
 ";"                                         return SEMICOLON;
