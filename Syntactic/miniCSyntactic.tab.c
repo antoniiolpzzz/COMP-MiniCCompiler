@@ -74,21 +74,27 @@
      PRINT = 263,
      READ = 264,
      DO = 265,
-     SEMICOLON = 266,
-     COMMA = 267,
-     PLUSOP = 268,
-     MINUSOP = 269,
-     TIMES = 270,
-     DIV = 271,
-     EQUALS = 272,
-     LPAR = 273,
-     RPAR = 274,
-     LKEY = 275,
-     RKEY = 276,
-     STRING = 277,
-     ID = 278,
-     NUMBER = 279,
-     UMINUS = 280
+     GREATER = 266,
+     GEQUAL = 267,
+     LESS = 268,
+     LEQUAL = 269,
+     EEQUAL = 270,
+     NEQUAL = 271,
+     SEMICOLON = 272,
+     COMMA = 273,
+     PLUSOP = 274,
+     MINUSOP = 275,
+     TIMES = 276,
+     DIV = 277,
+     EQUALS = 278,
+     LPAR = 279,
+     RPAR = 280,
+     LKEY = 281,
+     RKEY = 282,
+     STRING = 283,
+     ID = 284,
+     NUMBER = 285,
+     UMINUS = 286
    };
 #endif
 /* Tokens.  */
@@ -100,21 +106,27 @@
 #define PRINT 263
 #define READ 264
 #define DO 265
-#define SEMICOLON 266
-#define COMMA 267
-#define PLUSOP 268
-#define MINUSOP 269
-#define TIMES 270
-#define DIV 271
-#define EQUALS 272
-#define LPAR 273
-#define RPAR 274
-#define LKEY 275
-#define RKEY 276
-#define STRING 277
-#define ID 278
-#define NUMBER 279
-#define UMINUS 280
+#define GREATER 266
+#define GEQUAL 267
+#define LESS 268
+#define LEQUAL 269
+#define EEQUAL 270
+#define NEQUAL 271
+#define SEMICOLON 272
+#define COMMA 273
+#define PLUSOP 274
+#define MINUSOP 275
+#define TIMES 276
+#define DIV 277
+#define EQUALS 278
+#define LPAR 279
+#define RPAR 280
+#define LKEY 281
+#define RKEY 282
+#define STRING 283
+#define ID 284
+#define NUMBER 285
+#define UMINUS 286
 
 
 
@@ -142,9 +154,14 @@
 	Tipo symbolType;
 	int stringCount = 0;
 	
+	extern int lexicalErr;
+	int syntacticErr = 0;
+	int semanticErr = 0;
+	
 	void imprimirCodigo(ListaC codigo);
 	void liberarReg(char * registro);
 	void añadeEntrada(Lista lista, char * simbolo, Tipo tipo);
+	int numErrors();
 	char * obtenerReg();
 	char * newLabel();
 	char * concatenaStr(char * str0, char * str1);
@@ -171,13 +188,13 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 36 "Syntactic/miniCSyntactic.y"
+#line 41 "Syntactic/miniCSyntactic.y"
 {
 	char * str;
 	ListaC cod;
 }
 /* Line 193 of yacc.c.  */
-#line 181 "Syntactic/miniCSyntactic.tab.c"
+#line 198 "Syntactic/miniCSyntactic.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -190,7 +207,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 194 "Syntactic/miniCSyntactic.tab.c"
+#line 211 "Syntactic/miniCSyntactic.tab.c"
 
 #ifdef short
 # undef short
@@ -405,20 +422,20 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  3
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   112
+#define YYLAST   207
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  26
+#define YYNTOKENS  32
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  14
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  36
+#define YYNRULES  46
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  84
+#define YYNSTATES  102
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   280
+#define YYMAXUTOK   286
 
 #define YYTRANSLATE(YYX)						\
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -454,7 +471,7 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25
+      25,    26,    27,    28,    29,    30,    31
 };
 
 #if YYDEBUG
@@ -463,37 +480,43 @@ static const yytype_uint8 yytranslate[] =
 static const yytype_uint8 yyprhs[] =
 {
        0,     0,     3,     4,    13,    14,    15,    21,    22,    28,
-      30,    34,    36,    40,    41,    44,    49,    53,    61,    67,
-      74,    80,    86,    92,    94,    98,   100,   102,   104,   108,
-     112,   116,   120,   124,   127,   131,   133
+      33,    38,    40,    44,    46,    50,    51,    54,    59,    63,
+      71,    77,    84,    90,    96,   102,   104,   106,   110,   112,
+     114,   116,   120,   124,   128,   132,   136,   139,   143,   147,
+     151,   155,   159,   163,   167,   169,   171
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      27,     0,    -1,    -1,    28,    23,    18,    19,    20,    29,
-      34,    21,    -1,    -1,    -1,    29,     3,    30,    32,    11,
-      -1,    -1,    29,     4,    31,    32,    11,    -1,    33,    -1,
-      32,    12,    33,    -1,    23,    -1,    23,    17,    39,    -1,
-      -1,    34,    35,    -1,    23,    17,    39,    11,    -1,    20,
-      34,    21,    -1,     5,    18,    39,    19,    35,     6,    35,
-      -1,     5,    18,    39,    19,    35,    -1,    10,    35,     7,
-      18,    39,    19,    -1,     7,    18,    39,    19,    35,    -1,
-       8,    18,    36,    19,    11,    -1,     9,    18,    38,    19,
-      11,    -1,    37,    -1,    36,    12,    37,    -1,    39,    -1,
-      22,    -1,    23,    -1,    38,    12,    23,    -1,    39,    13,
-      39,    -1,    39,    14,    39,    -1,    39,    15,    39,    -1,
-      39,    16,    39,    -1,    14,    39,    -1,    18,    39,    19,
-      -1,    23,    -1,    24,    -1
+      33,     0,    -1,    -1,    34,    29,    24,    25,    26,    35,
+      40,    27,    -1,    -1,    -1,    35,     3,    36,    38,    17,
+      -1,    -1,    35,     4,    37,    38,    17,    -1,    35,     4,
+       1,    17,    -1,    35,     3,     1,    17,    -1,    39,    -1,
+      38,    18,    39,    -1,    29,    -1,    29,    23,    45,    -1,
+      -1,    40,    41,    -1,    29,    23,    45,    17,    -1,    26,
+      40,    27,    -1,     5,    24,    45,    25,    41,     6,    41,
+      -1,     5,    24,    45,    25,    41,    -1,    10,    41,     7,
+      24,    45,    25,    -1,     7,    24,    45,    25,    41,    -1,
+       8,    24,    42,    25,    17,    -1,     9,    24,    44,    25,
+      17,    -1,     1,    -1,    43,    -1,    42,    18,    43,    -1,
+      45,    -1,    28,    -1,    29,    -1,    44,    18,    29,    -1,
+      45,    19,    45,    -1,    45,    20,    45,    -1,    45,    21,
+      45,    -1,    45,    22,    45,    -1,    20,    45,    -1,    24,
+      45,    25,    -1,    45,    11,    45,    -1,    45,    12,    45,
+      -1,    45,    13,    45,    -1,    45,    14,    45,    -1,    45,
+      15,    45,    -1,    45,    16,    45,    -1,    29,    -1,    30,
+      -1,     1,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    54,    54,    54,    57,    59,    59,    64,    64,    70,
-      72,    78,    84,    99,   101,   107,   123,   125,   164,   186,
-     225,   264,   267,   270,   272,   278,   301,   329,   354,   381,
-     393,   405,   417,   429,   441,   443,   453
+       0,    63,    63,    63,    78,    80,    80,    86,    86,    91,
+      98,   108,   110,   118,   124,   140,   142,   150,   162,   164,
+     203,   226,   265,   305,   308,   310,   319,   321,   329,   352,
+     380,   405,   432,   444,   456,   468,   480,   490,   492,   508,
+     523,   538,   553,   570,   588,   598,   606
 };
 #endif
 
@@ -503,10 +526,11 @@ static const yytype_uint16 yyrline[] =
 static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "VAR", "CONST", "IF", "ELSE", "WHILE",
-  "PRINT", "READ", "DO", "SEMICOLON", "COMMA", "PLUSOP", "MINUSOP",
-  "TIMES", "DIV", "EQUALS", "LPAR", "RPAR", "LKEY", "RKEY", "STRING", "ID",
-  "NUMBER", "UMINUS", "$accept", "program", "@1", "declarations", "@2",
-  "@3", "identifier_list", "identifier", "statement_list", "statement",
+  "PRINT", "READ", "DO", "GREATER", "GEQUAL", "LESS", "LEQUAL", "EEQUAL",
+  "NEQUAL", "SEMICOLON", "COMMA", "PLUSOP", "MINUSOP", "TIMES", "DIV",
+  "EQUALS", "LPAR", "RPAR", "LKEY", "RKEY", "STRING", "ID", "NUMBER",
+  "UMINUS", "$accept", "program", "@1", "declarations", "@2", "@3",
+  "identifier_list", "identifier", "statement_list", "statement",
   "print_list", "print_item", "read_list", "expression", 0
 };
 #endif
@@ -518,26 +542,29 @@ static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
-     275,   276,   277,   278,   279,   280
+     275,   276,   277,   278,   279,   280,   281,   282,   283,   284,
+     285,   286
 };
 # endif
 
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    26,    28,    27,    29,    30,    29,    31,    29,    32,
-      32,    33,    33,    34,    34,    35,    35,    35,    35,    35,
-      35,    35,    35,    36,    36,    37,    37,    38,    38,    39,
-      39,    39,    39,    39,    39,    39,    39
+       0,    32,    34,    33,    35,    36,    35,    37,    35,    35,
+      35,    38,    38,    39,    39,    40,    40,    41,    41,    41,
+      41,    41,    41,    41,    41,    41,    42,    42,    43,    43,
+      44,    44,    45,    45,    45,    45,    45,    45,    45,    45,
+      45,    45,    45,    45,    45,    45,    45
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     0,     8,     0,     0,     5,     0,     5,     1,
-       3,     1,     3,     0,     2,     4,     3,     7,     5,     6,
-       5,     5,     5,     1,     3,     1,     1,     1,     3,     3,
-       3,     3,     3,     2,     3,     1,     1
+       0,     2,     0,     8,     0,     0,     5,     0,     5,     4,
+       4,     1,     3,     1,     3,     0,     2,     4,     3,     7,
+       5,     6,     5,     5,     5,     1,     1,     3,     1,     1,
+       1,     3,     3,     3,     3,     3,     2,     3,     3,     3,
+       3,     3,     3,     3,     1,     1,     1
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -545,97 +572,121 @@ static const yytype_uint8 yyr2[] =
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       2,     0,     0,     1,     0,     0,     0,     4,    13,     5,
-       7,     0,     0,     0,     0,     0,     0,     0,     0,    13,
-       3,     0,    14,    11,     0,     9,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     6,     0,     8,     0,     0,
-      35,    36,     0,     0,    26,     0,    23,    25,    27,     0,
-       0,    16,     0,    12,    10,    33,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,    15,    34,
-      29,    30,    31,    32,    18,    20,    24,    21,    28,    22,
-       0,     0,    19,    17
+       2,     0,     0,     1,     0,     0,     0,     4,    15,     0,
+       0,     0,     0,     0,     0,     0,    25,     0,     0,     0,
+       0,     0,    15,     3,     0,    16,    10,    13,     0,    11,
+       9,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       6,     0,     8,    46,     0,     0,    44,    45,     0,     0,
+      29,     0,    26,    28,    30,     0,     0,    18,     0,    14,
+      12,    36,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+      17,    37,    38,    39,    40,    41,    42,    43,    32,    33,
+      34,    35,    20,    22,    27,    23,    31,    24,     0,     0,
+      21,    19
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     1,     2,     8,    12,    13,    24,    25,    11,    22,
-      45,    46,    49,    47
+      -1,     1,     2,     8,    13,    15,    28,    29,    11,    25,
+      51,    52,    55,    53
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -27
-static const yytype_int8 yypact[] =
+#define YYPACT_NINF -32
+static const yytype_int16 yypact[] =
 {
-     -27,     5,   -14,   -27,     1,    23,    25,   -27,     0,   -27,
-     -27,    15,    24,    24,    35,    42,    48,    50,    47,   -27,
-     -27,    52,   -27,    59,    17,   -27,    28,     3,     3,    -8,
-      60,    68,    41,     3,     3,   -27,    24,   -27,     3,     3,
-     -27,   -27,    58,    65,   -27,    -1,   -27,    90,   -27,    18,
-      64,   -27,    86,    90,   -27,   -27,    72,     3,     3,     3,
-       3,    47,    47,    -8,    54,    66,    85,     3,   -27,   -27,
-      43,    43,   -27,   -27,    84,   -27,   -27,   -27,   -27,   -27,
-      79,    47,   -27,   -27
+     -32,    20,   -23,   -32,     4,    -2,     3,   -32,     6,     2,
+      14,    59,     7,    -4,     9,    -4,   -32,    21,    23,    25,
+      27,    82,   -32,   -32,    34,   -32,   -32,    35,    -1,   -32,
+     -32,     1,    41,    41,    26,    15,    52,    72,    41,    41,
+     -32,    -4,   -32,   -32,    41,    41,   -32,   -32,   101,   116,
+     -32,   -14,   -32,   173,   -32,   -13,    38,   -32,   161,   173,
+     -32,   -32,   131,    41,    41,    41,    41,    41,    41,    41,
+      41,    41,    41,    82,    82,    26,    13,    43,    46,    41,
+     -32,   -32,   185,   185,   185,   185,   185,   185,     0,     0,
+     -32,   -32,    68,   -32,   -32,   -32,   -32,   -32,   146,    82,
+     -32,   -32
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -27,   -27,   -27,   -27,   -27,   -27,    94,    73,    89,   -18,
-     -27,    49,   -27,   -26
+     -32,   -32,   -32,   -32,   -32,   -32,    60,    53,    54,   -21,
+     -32,    18,   -32,   -31
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule which
    number is the opposite.  If zero, do what YYDEFACT says.
    If YYTABLE_NINF, syntax error.  */
-#define YYTABLE_NINF -1
-static const yytype_uint8 yytable[] =
+#define YYTABLE_NINF -8
+static const yytype_int8 yytable[] =
 {
-      31,    42,    43,     9,    10,     3,    38,    52,    53,     4,
-      39,    63,    55,    56,    44,    40,    41,    38,    64,     5,
-      14,    39,    15,    16,    17,    18,    40,    41,    35,    36,
-      65,    70,    71,    72,    73,    19,    20,    66,    21,    37,
-      36,    80,     6,    74,    75,     7,    14,    23,    15,    16,
-      17,    18,    14,    27,    15,    16,    17,    18,    59,    60,
-      28,    19,    51,    83,    21,    77,    29,    19,    30,    33,
-      21,    57,    58,    59,    60,    50,    34,    61,    57,    58,
-      59,    60,    67,    48,    62,    57,    58,    59,    60,    78,
-      81,    69,    57,    58,    59,    60,    79,    68,    82,    57,
-      58,    59,    60,    57,    58,    59,    60,    26,    32,    54,
-       0,     0,    76
+      36,    48,    49,    12,    75,    77,     4,    58,    59,     9,
+      10,    76,    78,    61,    62,    14,    40,    41,    42,    41,
+       3,    71,    72,     6,    26,    27,    30,    43,     5,     7,
+      95,    -5,    82,    83,    84,    85,    86,    87,    88,    89,
+      90,    91,    43,    -7,    54,    32,    44,    33,    98,    34,
+      45,    35,    92,    93,    50,    46,    47,    38,    39,    56,
+      16,    44,    79,    97,    17,    45,    18,    19,    20,    21,
+      46,    47,    96,    16,    99,    31,    37,    17,   101,    18,
+      19,    20,    21,    16,     0,    22,    23,    17,    24,    18,
+      19,    20,    21,    94,    60,     0,     0,     0,    22,    57,
+       0,    24,     0,     0,     0,     0,     0,     0,    22,     0,
+       0,    24,    63,    64,    65,    66,    67,    68,     0,     0,
+      69,    70,    71,    72,     0,     0,    73,    63,    64,    65,
+      66,    67,    68,     0,     0,    69,    70,    71,    72,     0,
+       0,    74,    63,    64,    65,    66,    67,    68,     0,     0,
+      69,    70,    71,    72,     0,     0,    81,    63,    64,    65,
+      66,    67,    68,     0,     0,    69,    70,    71,    72,     0,
+       0,   100,    63,    64,    65,    66,    67,    68,    80,     0,
+      69,    70,    71,    72,    63,    64,    65,    66,    67,    68,
+       0,     0,    69,    70,    71,    72,    -8,    -8,    -8,    -8,
+      -8,    -8,     0,     0,    69,    70,    71,    72
 };
 
 static const yytype_int8 yycheck[] =
 {
-      18,    27,    28,     3,     4,     0,    14,    33,    34,    23,
-      18,    12,    38,    39,    22,    23,    24,    14,    19,    18,
-       5,    18,     7,     8,     9,    10,    23,    24,    11,    12,
-      12,    57,    58,    59,    60,    20,    21,    19,    23,    11,
-      12,    67,    19,    61,    62,    20,     5,    23,     7,     8,
-       9,    10,     5,    18,     7,     8,     9,    10,    15,    16,
-      18,    20,    21,    81,    23,    11,    18,    20,    18,    17,
-      23,    13,    14,    15,    16,     7,    17,    19,    13,    14,
-      15,    16,    18,    23,    19,    13,    14,    15,    16,    23,
-       6,    19,    13,    14,    15,    16,    11,    11,    19,    13,
-      14,    15,    16,    13,    14,    15,    16,    13,    19,    36,
-      -1,    -1,    63
+      21,    32,    33,     1,    18,    18,    29,    38,    39,     3,
+       4,    25,    25,    44,    45,     1,    17,    18,    17,    18,
+       0,    21,    22,    25,    17,    29,    17,     1,    24,    26,
+      17,    29,    63,    64,    65,    66,    67,    68,    69,    70,
+      71,    72,     1,    29,    29,    24,    20,    24,    79,    24,
+      24,    24,    73,    74,    28,    29,    30,    23,    23,     7,
+       1,    20,    24,    17,     5,    24,     7,     8,     9,    10,
+      29,    30,    29,     1,     6,    15,    22,     5,    99,     7,
+       8,     9,    10,     1,    -1,    26,    27,     5,    29,     7,
+       8,     9,    10,    75,    41,    -1,    -1,    -1,    26,    27,
+      -1,    29,    -1,    -1,    -1,    -1,    -1,    -1,    26,    -1,
+      -1,    29,    11,    12,    13,    14,    15,    16,    -1,    -1,
+      19,    20,    21,    22,    -1,    -1,    25,    11,    12,    13,
+      14,    15,    16,    -1,    -1,    19,    20,    21,    22,    -1,
+      -1,    25,    11,    12,    13,    14,    15,    16,    -1,    -1,
+      19,    20,    21,    22,    -1,    -1,    25,    11,    12,    13,
+      14,    15,    16,    -1,    -1,    19,    20,    21,    22,    -1,
+      -1,    25,    11,    12,    13,    14,    15,    16,    17,    -1,
+      19,    20,    21,    22,    11,    12,    13,    14,    15,    16,
+      -1,    -1,    19,    20,    21,    22,    11,    12,    13,    14,
+      15,    16,    -1,    -1,    19,    20,    21,    22
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,    27,    28,     0,    23,    18,    19,    20,    29,     3,
-       4,    34,    30,    31,     5,     7,     8,     9,    10,    20,
-      21,    23,    35,    23,    32,    33,    32,    18,    18,    18,
-      18,    35,    34,    17,    17,    11,    12,    11,    14,    18,
-      23,    24,    39,    39,    22,    36,    37,    39,    23,    38,
-       7,    21,    39,    39,    33,    39,    39,    13,    14,    15,
-      16,    19,    19,    12,    19,    12,    19,    18,    11,    19,
-      39,    39,    39,    39,    35,    35,    37,    11,    23,    11,
-      39,     6,    19,    35
+       0,    33,    34,     0,    29,    24,    25,    26,    35,     3,
+       4,    40,     1,    36,     1,    37,     1,     5,     7,     8,
+       9,    10,    26,    27,    29,    41,    17,    29,    38,    39,
+      17,    38,    24,    24,    24,    24,    41,    40,    23,    23,
+      17,    18,    17,     1,    20,    24,    29,    30,    45,    45,
+      28,    42,    43,    45,    29,    44,     7,    27,    45,    45,
+      39,    45,    45,    11,    12,    13,    14,    15,    16,    19,
+      20,    21,    22,    25,    25,    18,    25,    18,    25,    24,
+      17,    25,    45,    45,    45,    45,    45,    45,    45,    45,
+      45,    45,    41,    41,    43,    17,    29,    17,    45,     6,
+      25,    41
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1450,71 +1501,105 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 54 "Syntactic/miniCSyntactic.y"
+#line 63 "Syntactic/miniCSyntactic.y"
     {symbolTable = creaLS();;}
     break;
 
   case 3:
-#line 54 "Syntactic/miniCSyntactic.y"
-    { imprimirTablaS(symbolTable); concatenaLC((yyvsp[(6) - (8)].cod), (yyvsp[(7) - (8)].cod)); imprimirCodigo((yyvsp[(6) - (8)].cod)); liberaLS(symbolTable); liberaLC((yyvsp[(6) - (8)].cod)); ;}
+#line 63 "Syntactic/miniCSyntactic.y"
+    {
+	
+																if( numErrors() == 0){
+																	imprimirTablaS(symbolTable);
+																}
+																concatenaLC((yyvsp[(6) - (8)].cod), (yyvsp[(7) - (8)].cod));
+																if( numErrors() == 0){
+																	imprimirCodigo((yyvsp[(6) - (8)].cod));
+																}
+																liberaLS(symbolTable);
+																liberaLC((yyvsp[(6) - (8)].cod)); 
+															;}
     break;
 
   case 4:
-#line 57 "Syntactic/miniCSyntactic.y"
+#line 78 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = creaLC(); ;}
     break;
 
   case 5:
-#line 59 "Syntactic/miniCSyntactic.y"
+#line 80 "Syntactic/miniCSyntactic.y"
     { symbolType = VARIABLE; ;}
     break;
 
   case 6:
-#line 59 "Syntactic/miniCSyntactic.y"
-    { (yyval.cod) = (yyvsp[(1) - (5)].cod);
+#line 80 "Syntactic/miniCSyntactic.y"
+    {
+																							(yyval.cod) = (yyvsp[(1) - (5)].cod);
 																							concatenaLC((yyval.cod), (yyvsp[(4) - (5)].cod));
 																							liberaLC((yyvsp[(4) - (5)].cod));
 																						;}
     break;
 
   case 7:
-#line 64 "Syntactic/miniCSyntactic.y"
+#line 86 "Syntactic/miniCSyntactic.y"
     { symbolType = CONSTANTE; ;}
     break;
 
   case 8:
-#line 64 "Syntactic/miniCSyntactic.y"
-    { (yyval.cod) = (yyvsp[(1) - (5)].cod);
-																								concatenaLC((yyval.cod), (yyvsp[(4) - (5)].cod));
-																								liberaLC((yyvsp[(4) - (5)].cod));
-																							;}
+#line 86 "Syntactic/miniCSyntactic.y"
+    {
+																							(yyval.cod) = (yyvsp[(1) - (5)].cod);
+																							concatenaLC((yyval.cod), (yyvsp[(4) - (5)].cod));
+																							liberaLC((yyvsp[(4) - (5)].cod));
+																						;}
     break;
 
   case 9:
-#line 70 "Syntactic/miniCSyntactic.y"
-    { (yyval.cod) = (yyvsp[(1) - (1)].cod); ;}
+#line 91 "Syntactic/miniCSyntactic.y"
+    {
+												(yyval.cod) = creaLC();
+												guardaResLC((yyval.cod), "" );
+												fprintf(stderr, "Linea %d: Error en la declaración de una constante\n", yylineno);
+												syntacticErr++;
+											;}
     break;
 
   case 10:
-#line 72 "Syntactic/miniCSyntactic.y"
-    { (yyval.cod) = (yyvsp[(1) - (3)].cod);
+#line 98 "Syntactic/miniCSyntactic.y"
+    {
+												(yyval.cod) = creaLC();
+												guardaResLC((yyval.cod), "" );
+												fprintf(stderr, "Linea %d: Error en la declaración de una variable\n", yylineno);
+												syntacticErr++;
+											;}
+    break;
+
+  case 11:
+#line 108 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = (yyvsp[(1) - (1)].cod); ;}
+    break;
+
+  case 12:
+#line 110 "Syntactic/miniCSyntactic.y"
+    { 
+																		(yyval.cod) = (yyvsp[(1) - (3)].cod);
 																		concatenaLC((yyval.cod), (yyvsp[(3) - (3)].cod));
 																		liberaLC((yyvsp[(3) - (3)].cod));
 																	;}
     break;
 
-  case 11:
-#line 78 "Syntactic/miniCSyntactic.y"
-    {if (!perteneceTS(symbolTable, (yyvsp[(1) - (1)].str))) añadeEntrada(symbolTable, (yyvsp[(1) - (1)].str), symbolType); else printf("Error en linea %d: Variable %s ya declarada\n", yylineno, (yyvsp[(1) - (1)].str));
+  case 13:
+#line 118 "Syntactic/miniCSyntactic.y"
+    {if (!perteneceTS(symbolTable, (yyvsp[(1) - (1)].str))) añadeEntrada(symbolTable, (yyvsp[(1) - (1)].str), symbolType); else { fprintf(stderr, "Error en linea %d: Variable %s ya declarada\n", yylineno, (yyvsp[(1) - (1)].str)); semanticErr++; }
 	
 																		(yyval.cod) = creaLC(); 
 																		
 																	;}
     break;
 
-  case 12:
-#line 84 "Syntactic/miniCSyntactic.y"
-    {if (!perteneceTS(symbolTable, (yyvsp[(1) - (3)].str))) añadeEntrada(symbolTable, (yyvsp[(1) - (3)].str), symbolType); else printf("Error en linea %d: Variable %s ya declarada\n", yylineno, (yyvsp[(1) - (3)].str)); 
+  case 14:
+#line 124 "Syntactic/miniCSyntactic.y"
+    {if (!perteneceTS(symbolTable, (yyvsp[(1) - (3)].str))) añadeEntrada(symbolTable, (yyvsp[(1) - (3)].str), symbolType); else { fprintf(stderr, "Error en linea %d: Variable %s ya declarada\n", yylineno, (yyvsp[(1) - (3)].str)); semanticErr++; }
 																		(yyval.cod) = (yyvsp[(3) - (3)].cod);
 																		
 																		Operacion oper;
@@ -1524,27 +1609,28 @@ yyreduce:
 																		oper.arg1 = concatenaStr("_", (yyvsp[(1) - (3)].str));
 																		oper.arg2 = NULL;
 																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
-																		liberarReg(oper.arg1);
-																		//liberaLC($3); //PUEDE SER QUE ESTO NO SEA CORRECTO VIDEO
+																		liberarReg(oper.res);
+																		
 																	;}
     break;
 
-  case 13:
-#line 99 "Syntactic/miniCSyntactic.y"
+  case 15:
+#line 140 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = creaLC(); ;}
     break;
 
-  case 14:
-#line 101 "Syntactic/miniCSyntactic.y"
-    { (yyval.cod) = (yyvsp[(1) - (2)].cod);
+  case 16:
+#line 142 "Syntactic/miniCSyntactic.y"
+    {
+																		(yyval.cod) = (yyvsp[(1) - (2)].cod);
 																		concatenaLC((yyval.cod), (yyvsp[(2) - (2)].cod));
 																		liberaLC((yyvsp[(2) - (2)].cod));
 																	;}
     break;
 
-  case 15:
-#line 107 "Syntactic/miniCSyntactic.y"
-    { if (!perteneceTS(symbolTable, (yyvsp[(1) - (4)].str))) printf("Error en linea %d: Variable %s no declarada\n", yylineno, (yyvsp[(1) - (4)].str)); else if (esConstante(symbolTable,(yyvsp[(1) - (4)].str))) printf("Error en linea %d: %s es constante\n", yylineno, (yyvsp[(1) - (4)].str)); 													
+  case 17:
+#line 150 "Syntactic/miniCSyntactic.y"
+    { if (!perteneceTS(symbolTable, (yyvsp[(1) - (4)].str))) { fprintf(stderr, "Error en linea %d: Variable %s no declarada\n", yylineno, (yyvsp[(1) - (4)].str)); semanticErr++; } else { if (esConstante(symbolTable,(yyvsp[(1) - (4)].str))) { fprintf(stderr, "Error en linea %d: %s es constante\n", yylineno, (yyvsp[(1) - (4)].str)); semanticErr++; } } 													
 																		
 																		(yyval.cod) = (yyvsp[(3) - (4)].cod);
 																		Operacion oper;
@@ -1553,21 +1639,17 @@ yyreduce:
 																		oper.arg1 = concatenaStr("_", (yyvsp[(1) - (4)].str));
 																		oper.arg2 = NULL;
 																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
-																		guardaResLC((yyval.cod), oper.res);
 																		liberarReg(oper.res);
-																		//liberaLC($3); //PUEDE QUE ESTE MAL
-																		
-																		
-																		/*LIBERAR REGISTROS?*/ ;}
+																	;}
     break;
 
-  case 16:
-#line 123 "Syntactic/miniCSyntactic.y"
+  case 18:
+#line 162 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = (yyvsp[(2) - (3)].cod); ;}
     break;
 
-  case 17:
-#line 125 "Syntactic/miniCSyntactic.y"
+  case 19:
+#line 164 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = (yyvsp[(3) - (7)].cod);
 																		char * label_ELSE = newLabel();
 																		char * label_END = newLabel();
@@ -1579,6 +1661,7 @@ yyreduce:
 																		oper.arg1 = label_ELSE;
 																		oper.arg2 = NULL;
 																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																		liberarReg(oper.res);
 																		
 																		concatenaLC((yyval.cod), (yyvsp[(5) - (7)].cod));
 																		
@@ -1602,14 +1685,13 @@ yyreduce:
 																		oper.arg2 = NULL;
 																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
 																		
-																		liberaLC((yyvsp[(5) - (7)].cod)); //COMPROBAR SI HACE FALTA
-																		liberaLC((yyvsp[(7) - (7)].cod)); //COMPROBAR SI HACE FALTA
-																		
+																		liberaLC((yyvsp[(5) - (7)].cod));
+																		liberaLC((yyvsp[(7) - (7)].cod));
 																	;}
     break;
 
-  case 18:
-#line 164 "Syntactic/miniCSyntactic.y"
+  case 20:
+#line 203 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = (yyvsp[(3) - (5)].cod);
 																		char * label_END = newLabel();
 																		
@@ -1620,6 +1702,7 @@ yyreduce:
 																		oper.arg1 = label_END;
 																		oper.arg2 = NULL;
 																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																		liberarReg(oper.res);
 																		
 																		concatenaLC((yyval.cod), (yyvsp[(5) - (5)].cod));
 																		
@@ -1629,12 +1712,12 @@ yyreduce:
 																		oper.arg2 = NULL;
 																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
 																		
-																		liberaLC((yyvsp[(5) - (5)].cod)); //COMPROBAR SI HACE FALTA
+																		liberaLC((yyvsp[(5) - (5)].cod));
 																	;}
     break;
 
-  case 19:
-#line 186 "Syntactic/miniCSyntactic.y"
+  case 21:
+#line 226 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = creaLC();
 																		concatenaLC((yyval.cod), (yyvsp[(5) - (6)].cod));
 																		char * label_DOWHILE = newLabel();
@@ -1656,7 +1739,7 @@ yyreduce:
 																		oper.arg1 = label_ENDDW;
 																		oper.arg2 = NULL;
 																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
-					
+																		liberarReg(oper.res);
 																							
 																		oper.op = "b";
 																		oper.res = label_DOWHILE;
@@ -1675,8 +1758,8 @@ yyreduce:
 																	;}
     break;
 
-  case 20:
-#line 225 "Syntactic/miniCSyntactic.y"
+  case 22:
+#line 265 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = creaLC();
 																		char * label_WHILE = newLabel();
 																		char * label_ENDW = newLabel();
@@ -1696,6 +1779,7 @@ yyreduce:
 																		oper.arg1 = label_ENDW;
 																		oper.arg2 = NULL;
 																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																		liberarReg(oper.res);
 																		
 																		concatenaLC((yyval.cod), (yyvsp[(5) - (5)].cod));
 																		
@@ -1716,31 +1800,42 @@ yyreduce:
 																	;}
     break;
 
-  case 21:
-#line 264 "Syntactic/miniCSyntactic.y"
-    { (yyval.cod) = (yyvsp[(3) - (5)].cod); ;}
-    break;
-
-  case 22:
-#line 267 "Syntactic/miniCSyntactic.y"
-    { (yyval.cod) = (yyvsp[(3) - (5)].cod); ;}
-    break;
-
   case 23:
-#line 270 "Syntactic/miniCSyntactic.y"
-    { (yyval.cod) = (yyvsp[(1) - (1)].cod);;}
+#line 305 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = (yyvsp[(3) - (5)].cod); ;}
     break;
 
   case 24:
-#line 272 "Syntactic/miniCSyntactic.y"
-    { (yyval.cod) = (yyvsp[(1) - (3)].cod);
+#line 308 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = (yyvsp[(3) - (5)].cod); ;}
+    break;
+
+  case 25:
+#line 310 "Syntactic/miniCSyntactic.y"
+    {
+									(yyval.cod) = creaLC();
+									guardaResLC((yyval.cod), "" );
+									fprintf(stderr, "Linea %d: Error en una sentencia\n", yylineno);
+									syntacticErr++;
+								;}
+    break;
+
+  case 26:
+#line 319 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = (yyvsp[(1) - (1)].cod);;}
+    break;
+
+  case 27:
+#line 321 "Syntactic/miniCSyntactic.y"
+    {
+																		(yyval.cod) = (yyvsp[(1) - (3)].cod);
 																		concatenaLC((yyval.cod), (yyvsp[(3) - (3)].cod));
 																		liberaLC((yyvsp[(3) - (3)].cod));
 																	;}
     break;
 
-  case 25:
-#line 278 "Syntactic/miniCSyntactic.y"
+  case 28:
+#line 329 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = (yyvsp[(1) - (1)].cod);
 																		Operacion oper;
 																		
@@ -1765,8 +1860,8 @@ yyreduce:
 																	;}
     break;
 
-  case 26:
-#line 301 "Syntactic/miniCSyntactic.y"
+  case 29:
+#line 352 "Syntactic/miniCSyntactic.y"
     { añadeEntrada(symbolTable, (yyvsp[(1) - (1)].str), CADENA); 
 				
 																		(yyval.cod) = creaLC();
@@ -1794,9 +1889,9 @@ yyreduce:
 																	;}
     break;
 
-  case 27:
-#line 329 "Syntactic/miniCSyntactic.y"
-    { if (!perteneceTS(symbolTable, (yyvsp[(1) - (1)].str))) printf("Error en linea %d: Variable %s no declarada\n", yylineno, (yyvsp[(1) - (1)].str)); else if (esConstante(symbolTable,(yyvsp[(1) - (1)].str))) printf("Error en linea %d: %s es constante\n", yylineno, (yyvsp[(1) - (1)].str)); 
+  case 30:
+#line 380 "Syntactic/miniCSyntactic.y"
+    { if (!perteneceTS(symbolTable, (yyvsp[(1) - (1)].str))) { fprintf(stderr, "Error en linea %d: Variable %s no declarada\n", yylineno, (yyvsp[(1) - (1)].str)); semanticErr++; } else { if (esConstante(symbolTable,(yyvsp[(1) - (1)].str))) { fprintf(stderr, "Error en linea %d: %s es constante\n", yylineno, (yyvsp[(1) - (1)].str)); semanticErr++; } }
 																		(yyval.cod) = creaLC(); /*$1;*/
 																		
 																		Operacion oper;
@@ -1822,9 +1917,9 @@ yyreduce:
 ;}
     break;
 
-  case 28:
-#line 354 "Syntactic/miniCSyntactic.y"
-    { if (!perteneceTS(symbolTable, (yyvsp[(3) - (3)].str))) printf("Error en linea %d: Variable %s no declarada\n", yylineno, (yyvsp[(3) - (3)].str)); else if (esConstante(symbolTable,(yyvsp[(3) - (3)].str))) printf("Error en linea %d: %s es constante\n", yylineno, (yyvsp[(3) - (3)].str)); 
+  case 31:
+#line 405 "Syntactic/miniCSyntactic.y"
+    { if (!perteneceTS(symbolTable, (yyvsp[(3) - (3)].str))) { fprintf(stderr, "Error en linea %d: Variable %s no declarada\n", yylineno, (yyvsp[(3) - (3)].str)); semanticErr++; } else { if (esConstante(symbolTable,(yyvsp[(3) - (3)].str))) { fprintf(stderr, "Error en linea %d: %s es constante\n", yylineno, (yyvsp[(3) - (3)].str)); semanticErr++; } }
 					
 																		(yyval.cod) = (yyvsp[(1) - (3)].cod);
 					
@@ -1850,8 +1945,8 @@ yyreduce:
 																	;}
     break;
 
-  case 29:
-#line 381 "Syntactic/miniCSyntactic.y"
+  case 32:
+#line 432 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = (yyvsp[(1) - (3)].cod);
 																		concatenaLC((yyval.cod), (yyvsp[(3) - (3)].cod));
 																		Operacion oper;
@@ -1865,8 +1960,8 @@ yyreduce:
 																		liberarReg(oper.arg2); ;}
     break;
 
-  case 30:
-#line 393 "Syntactic/miniCSyntactic.y"
+  case 33:
+#line 444 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = (yyvsp[(1) - (3)].cod);
 																		concatenaLC((yyval.cod), (yyvsp[(3) - (3)].cod));
 																		Operacion oper;
@@ -1880,8 +1975,8 @@ yyreduce:
 																		liberarReg(oper.arg2); ;}
     break;
 
-  case 31:
-#line 405 "Syntactic/miniCSyntactic.y"
+  case 34:
+#line 456 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = (yyvsp[(1) - (3)].cod);
 																		concatenaLC((yyval.cod), (yyvsp[(3) - (3)].cod));
 																		Operacion oper;
@@ -1895,8 +1990,8 @@ yyreduce:
 																		liberarReg(oper.arg2); ;}
     break;
 
-  case 32:
-#line 417 "Syntactic/miniCSyntactic.y"
+  case 35:
+#line 468 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = (yyvsp[(1) - (3)].cod);
 																		concatenaLC((yyval.cod), (yyvsp[(3) - (3)].cod));
 																		Operacion oper;
@@ -1910,8 +2005,8 @@ yyreduce:
 																		liberarReg(oper.arg2); ;}
     break;
 
-  case 33:
-#line 429 "Syntactic/miniCSyntactic.y"
+  case 36:
+#line 480 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = (yyvsp[(2) - (2)].cod);
 																		Operacion oper;
 																		oper.op = "neg";
@@ -1920,19 +2015,128 @@ yyreduce:
 																		oper.arg2 = NULL;
 																		insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
 																		guardaResLC((yyval.cod), oper.res);
-																		liberaLC((yyvsp[(2) - (2)].cod));
-																		/*liberarReg(oper.arg1);*/ //PUEDE QUE SOBRE ESTO
 																	;}
     break;
 
-  case 34:
-#line 441 "Syntactic/miniCSyntactic.y"
+  case 37:
+#line 490 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = (yyvsp[(2) - (3)].cod); ;}
     break;
 
-  case 35:
-#line 443 "Syntactic/miniCSyntactic.y"
-    { if (!perteneceTS(symbolTable, (yyvsp[(1) - (1)].str))) printf("Error en linea %d: Variable %s no declarada\n", yylineno, (yyvsp[(1) - (1)].str)); 
+  case 38:
+#line 492 "Syntactic/miniCSyntactic.y"
+    {
+																	(yyval.cod) = (yyvsp[(1) - (3)].cod);
+																	concatenaLC((yyval.cod), (yyvsp[(3) - (3)].cod));
+																	
+																	Operacion oper;
+																	oper.op = "slt";
+																	oper.res = recuperaResLC((yyvsp[(1) - (3)].cod));
+																	oper.arg1 = recuperaResLC((yyvsp[(3) - (3)].cod));
+																	oper.arg2 = recuperaResLC((yyvsp[(1) - (3)].cod));
+																	insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																	guardaResLC((yyval.cod), oper.res);
+																	
+																	liberaLC((yyvsp[(3) - (3)].cod));
+																	liberarReg(oper.arg1);
+																;}
+    break;
+
+  case 39:
+#line 508 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = (yyvsp[(1) - (3)].cod);
+																	concatenaLC((yyval.cod), (yyvsp[(3) - (3)].cod));
+																	
+																	Operacion oper;
+																	oper.op = "sge";
+																	oper.res = recuperaResLC((yyvsp[(1) - (3)].cod));
+																	oper.arg1 = recuperaResLC((yyvsp[(1) - (3)].cod));
+																	oper.arg2 = recuperaResLC((yyvsp[(3) - (3)].cod));
+																	insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																	guardaResLC((yyval.cod), oper.res);
+																	
+																	liberaLC((yyvsp[(3) - (3)].cod));
+																	liberarReg(oper.arg2);
+																;}
+    break;
+
+  case 40:
+#line 523 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = (yyvsp[(1) - (3)].cod);
+																	concatenaLC((yyval.cod), (yyvsp[(3) - (3)].cod));
+																	
+																	Operacion oper;
+																	oper.op = "slt";
+																	oper.res = recuperaResLC((yyvsp[(1) - (3)].cod));
+																	oper.arg1 = recuperaResLC((yyvsp[(1) - (3)].cod));
+																	oper.arg2 = recuperaResLC((yyvsp[(3) - (3)].cod));
+																	insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																	guardaResLC((yyval.cod), oper.res);
+																	
+																	liberaLC((yyvsp[(3) - (3)].cod));
+																	liberarReg(oper.arg2);
+				;}
+    break;
+
+  case 41:
+#line 538 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = (yyvsp[(1) - (3)].cod);
+																	concatenaLC((yyval.cod), (yyvsp[(3) - (3)].cod));
+																	
+																	Operacion oper;
+																	oper.op = "sle";
+																	oper.res = recuperaResLC((yyvsp[(1) - (3)].cod));
+																	oper.arg1 = recuperaResLC((yyvsp[(1) - (3)].cod));
+																	oper.arg2 = recuperaResLC((yyvsp[(3) - (3)].cod));
+																	insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																	guardaResLC((yyval.cod), oper.res);
+																	
+																	liberaLC((yyvsp[(3) - (3)].cod));
+																	liberarReg(oper.arg2);
+																;}
+    break;
+
+  case 42:
+#line 553 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = (yyvsp[(1) - (3)].cod);
+																	concatenaLC((yyval.cod), (yyvsp[(3) - (3)].cod));
+																	
+																	Operacion oper;
+																	oper.op = "seq";
+																	oper.res = recuperaResLC((yyvsp[(1) - (3)].cod));
+																	oper.arg1 = recuperaResLC((yyvsp[(1) - (3)].cod));
+																	oper.arg2 = recuperaResLC((yyvsp[(3) - (3)].cod));
+																	insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																	guardaResLC((yyval.cod), oper.res);
+																	
+																	liberaLC((yyvsp[(3) - (3)].cod));
+																	liberarReg(oper.arg2);
+																	
+																														
+																;}
+    break;
+
+  case 43:
+#line 570 "Syntactic/miniCSyntactic.y"
+    { (yyval.cod) = (yyvsp[(1) - (3)].cod);
+																	concatenaLC((yyval.cod), (yyvsp[(3) - (3)].cod));
+					
+																	Operacion oper;
+																	oper.op = "sne";
+																	oper.res = recuperaResLC((yyvsp[(1) - (3)].cod));
+																	oper.arg1 = recuperaResLC((yyvsp[(1) - (3)].cod));
+																	oper.arg2 = recuperaResLC((yyvsp[(3) - (3)].cod));
+																	insertaLC((yyval.cod), finalLC((yyval.cod)), oper);
+																	guardaResLC((yyval.cod), oper.res);
+																	
+																	liberaLC((yyvsp[(3) - (3)].cod));
+																	liberarReg(oper.arg2);
+																;}
+    break;
+
+  case 44:
+#line 588 "Syntactic/miniCSyntactic.y"
+    { if (!perteneceTS(symbolTable, (yyvsp[(1) - (1)].str))) { fprintf(stderr, "Error en linea %d: Variable %s no declarada\n", yylineno, (yyvsp[(1) - (1)].str)); semanticErr++; }
 																		(yyval.cod) = creaLC();
 																		Operacion oper;
 																		oper.op = "lw";
@@ -1943,8 +2147,8 @@ yyreduce:
 																		guardaResLC((yyval.cod), oper.res); ;}
     break;
 
-  case 36:
-#line 453 "Syntactic/miniCSyntactic.y"
+  case 45:
+#line 598 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = creaLC();
 																		Operacion oper;
 																		oper.op = "li";
@@ -1955,9 +2159,19 @@ yyreduce:
 																		guardaResLC((yyval.cod), oper.res); ;}
     break;
 
+  case 46:
+#line 606 "Syntactic/miniCSyntactic.y"
+    {
+									(yyval.cod) = creaLC();
+									guardaResLC((yyval.cod), "" );
+									fprintf(stderr, "Linea %d: Error en una expresión aritmética\n", yylineno);
+									syntacticErr++;
+								;}
+    break;
+
 
 /* Line 1267 of yacc.c.  */
-#line 1961 "Syntactic/miniCSyntactic.tab.c"
+#line 2175 "Syntactic/miniCSyntactic.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2171,13 +2385,13 @@ yyreturn:
 }
 
 
-#line 464 "Syntactic/miniCSyntactic.y"
+#line 614 "Syntactic/miniCSyntactic.y"
 
 
-void yyerror(const char *s){
-	
-	printf("Error sintáctico (línea %d): (yyerror) %s \n", yylineno, yytext);
-	printf("Error sintáctico (línea %d): (yyerror) %s \n", yylineno, s);
+void yyerror(const char *str){
+	syntacticErr++;
+	//fprintf(stderr, "Error sintáctico (línea %d): (yyerror) %s \n", yylineno, yytext);
+	fprintf(stderr, "Error sintáctico: (línea %d): %s \n", yylineno, str);
 }
 
 
@@ -2220,8 +2434,11 @@ char * obtenerReg(){
 				snprintf(resultado, 4, "$t%d", i);
 				return resultado;
 			}
-		}
-		return NULL;
+	}
+	semanticErr++;
+	fprintf(stderr, "No es posible compilar el programa. Registros insuficientes.\n");
+	
+	return NULL;
 }
 
 
@@ -2233,9 +2450,9 @@ void liberarReg(char * registro){
 	
 	if (indice >= 0 && indice < MAX_REGISTERS) {
 			registers[indice] = 0;
-		} else {
-			printf("Índice fuera de rango.\n");
-		}
+	} else {
+		fprintf(stderr, "Índice fuera de rango.\n");
+	}
 	
 }
 
@@ -2281,9 +2498,18 @@ char * concatenaStr(char * str0, char * str1){
 	asprintf(&string, "%s%s", str0, str1);
 	return string;
 }
+
 char * newLabel(){
 	char * label;
 	asprintf(&label, "$label_%d",labelCount++);
 	return label;
 	
+}
+
+int numErrors(){
+	
+	int errCounter = 0;
+	errCounter = lexicalErr + syntacticErr + semanticErr;
+		
+	return errCounter;
 }

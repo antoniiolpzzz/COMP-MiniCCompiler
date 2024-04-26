@@ -1,4 +1,4 @@
-State 74 conflicts: 1 shift/reduce
+State 92 conflicts: 1 shift/reduce
 
 
 Grammar
@@ -18,104 +18,121 @@ Grammar
     6 @3: /* empty */
 
     7 declarations: declarations CONST @3 identifier_list SEMICOLON
+    8             | declarations CONST error SEMICOLON
+    9             | declarations VAR error SEMICOLON
 
-    8 identifier_list: identifier
-    9                | identifier_list COMMA identifier
+   10 identifier_list: identifier
+   11                | identifier_list COMMA identifier
 
-   10 identifier: ID
-   11           | ID EQUALS expression
+   12 identifier: ID
+   13           | ID EQUALS expression
 
-   12 statement_list: /* empty */
-   13               | statement_list statement
+   14 statement_list: /* empty */
+   15               | statement_list statement
 
-   14 statement: ID EQUALS expression SEMICOLON
-   15          | LKEY statement_list RKEY
-   16          | IF LPAR expression RPAR statement ELSE statement
-   17          | IF LPAR expression RPAR statement
-   18          | DO statement WHILE LPAR expression RPAR
-   19          | WHILE LPAR expression RPAR statement
-   20          | PRINT LPAR print_list RPAR SEMICOLON
-   21          | READ LPAR read_list RPAR SEMICOLON
+   16 statement: ID EQUALS expression SEMICOLON
+   17          | LKEY statement_list RKEY
+   18          | IF LPAR expression RPAR statement ELSE statement
+   19          | IF LPAR expression RPAR statement
+   20          | DO statement WHILE LPAR expression RPAR
+   21          | WHILE LPAR expression RPAR statement
+   22          | PRINT LPAR print_list RPAR SEMICOLON
+   23          | READ LPAR read_list RPAR SEMICOLON
+   24          | error
 
-   22 print_list: print_item
-   23           | print_list COMMA print_item
+   25 print_list: print_item
+   26           | print_list COMMA print_item
 
-   24 print_item: expression
-   25           | STRING
+   27 print_item: expression
+   28           | STRING
 
-   26 read_list: ID
-   27          | read_list COMMA ID
+   29 read_list: ID
+   30          | read_list COMMA ID
 
-   28 expression: expression PLUSOP expression
-   29           | expression MINUSOP expression
-   30           | expression TIMES expression
-   31           | expression DIV expression
-   32           | MINUSOP expression
-   33           | LPAR expression RPAR
-   34           | ID
-   35           | NUMBER
+   31 expression: expression PLUSOP expression
+   32           | expression MINUSOP expression
+   33           | expression TIMES expression
+   34           | expression DIV expression
+   35           | MINUSOP expression
+   36           | LPAR expression RPAR
+   37           | expression GREATER expression
+   38           | expression GEQUAL expression
+   39           | expression LESS expression
+   40           | expression LEQUAL expression
+   41           | expression EEQUAL expression
+   42           | expression NEQUAL expression
+   43           | ID
+   44           | NUMBER
+   45           | error
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
-error (256)
-VAR (258) 5
-CONST (259) 7
-IF (260) 16 17
-ELSE (261) 16
-WHILE (262) 18 19
-PRINT (263) 20
-READ (264) 21
-DO (265) 18
-SEMICOLON (266) 5 7 14 20 21
-COMMA (267) 9 23 27
-PLUSOP (268) 28
-MINUSOP (269) 29 32
-TIMES (270) 30
-DIV (271) 31
-EQUALS (272) 11 14
-LPAR (273) 2 16 17 18 19 20 21 33
-RPAR (274) 2 16 17 18 19 20 21 33
-LKEY (275) 2 15
-RKEY (276) 2 15
-STRING (277) 25
-ID (278) 2 10 11 14 26 27 34
-NUMBER (279) 35
-UMINUS (280)
+error (256) 8 9 24 45
+VAR (258) 5 9
+CONST (259) 7 8
+IF (260) 18 19
+ELSE (261) 18
+WHILE (262) 20 21
+PRINT (263) 22
+READ (264) 23
+DO (265) 20
+GREATER (266) 37
+GEQUAL (267) 38
+LESS (268) 39
+LEQUAL (269) 40
+EEQUAL (270) 41
+NEQUAL (271) 42
+SEMICOLON (272) 5 7 8 9 16 22 23
+COMMA (273) 11 26 30
+PLUSOP (274) 31
+MINUSOP (275) 32 35
+TIMES (276) 33
+DIV (277) 34
+EQUALS (278) 13 16
+LPAR (279) 2 18 19 20 21 22 23 36
+RPAR (280) 2 18 19 20 21 22 23 36
+LKEY (281) 2 17
+RKEY (282) 2 17
+STRING (283) 28
+ID (284) 2 12 13 16 29 30 43
+NUMBER (285) 44
+UMINUS (286)
 
 
 Nonterminals, with rules where they appear
 
-$accept (26)
+$accept (32)
     on left: 0
-program (27)
+program (33)
     on left: 2, on right: 0
-@1 (28)
+@1 (34)
     on left: 1, on right: 2
-declarations (29)
-    on left: 3 5 7, on right: 2 5 7
-@2 (30)
+declarations (35)
+    on left: 3 5 7 8 9, on right: 2 5 7 8 9
+@2 (36)
     on left: 4, on right: 5
-@3 (31)
+@3 (37)
     on left: 6, on right: 7
-identifier_list (32)
-    on left: 8 9, on right: 5 7 9
-identifier (33)
-    on left: 10 11, on right: 8 9
-statement_list (34)
-    on left: 12 13, on right: 2 13 15
-statement (35)
-    on left: 14 15 16 17 18 19 20 21, on right: 13 16 17 18 19
-print_list (36)
-    on left: 22 23, on right: 20 23
-print_item (37)
-    on left: 24 25, on right: 22 23
-read_list (38)
-    on left: 26 27, on right: 21 27
-expression (39)
-    on left: 28 29 30 31 32 33 34 35, on right: 11 14 16 17 18 19 24
-    28 29 30 31 32 33
+identifier_list (38)
+    on left: 10 11, on right: 5 7 11
+identifier (39)
+    on left: 12 13, on right: 10 11
+statement_list (40)
+    on left: 14 15, on right: 2 15 17
+statement (41)
+    on left: 16 17 18 19 20 21 22 23 24, on right: 15 18 19 20 21
+print_list (42)
+    on left: 25 26, on right: 22 26
+print_item (43)
+    on left: 27 28, on right: 25 26
+read_list (44)
+    on left: 29 30, on right: 23 30
+expression (45)
+    on left: 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45,
+    on right: 13 16 18 19 20 21 27 31 32 33 34 35 36 37 38 39 40 41
+    42
 
 
 state 0
@@ -184,11 +201,13 @@ state 8
     2 program: @1 ID LPAR RPAR LKEY declarations . statement_list RKEY
     5 declarations: declarations . VAR @2 identifier_list SEMICOLON
     7             | declarations . CONST @3 identifier_list SEMICOLON
+    8             | declarations . CONST error SEMICOLON
+    9             | declarations . VAR error SEMICOLON
 
     VAR    shift, and go to state 9
     CONST  shift, and go to state 10
 
-    $default  reduce using rule 12 (statement_list)
+    $default  reduce using rule 14 (statement_list)
 
     statement_list  go to state 11
 
@@ -196,764 +215,1197 @@ state 8
 state 9
 
     5 declarations: declarations VAR . @2 identifier_list SEMICOLON
+    9             | declarations VAR . error SEMICOLON
 
-    $default  reduce using rule 4 (@2)
+    error  shift, and go to state 12
 
-    @2  go to state 12
+    ID  reduce using rule 4 (@2)
+
+    @2  go to state 13
 
 
 state 10
 
     7 declarations: declarations CONST . @3 identifier_list SEMICOLON
+    8             | declarations CONST . error SEMICOLON
 
-    $default  reduce using rule 6 (@3)
+    error  shift, and go to state 14
 
-    @3  go to state 13
+    ID  reduce using rule 6 (@3)
+
+    @3  go to state 15
 
 
 state 11
 
     2 program: @1 ID LPAR RPAR LKEY declarations statement_list . RKEY
-   13 statement_list: statement_list . statement
+   15 statement_list: statement_list . statement
 
-    IF     shift, and go to state 14
-    WHILE  shift, and go to state 15
-    PRINT  shift, and go to state 16
-    READ   shift, and go to state 17
-    DO     shift, and go to state 18
-    LKEY   shift, and go to state 19
-    RKEY   shift, and go to state 20
-    ID     shift, and go to state 21
+    error  shift, and go to state 16
+    IF     shift, and go to state 17
+    WHILE  shift, and go to state 18
+    PRINT  shift, and go to state 19
+    READ   shift, and go to state 20
+    DO     shift, and go to state 21
+    LKEY   shift, and go to state 22
+    RKEY   shift, and go to state 23
+    ID     shift, and go to state 24
 
-    statement  go to state 22
+    statement  go to state 25
 
 
 state 12
 
-    5 declarations: declarations VAR @2 . identifier_list SEMICOLON
+    9 declarations: declarations VAR error . SEMICOLON
 
-    ID  shift, and go to state 23
-
-    identifier_list  go to state 24
-    identifier       go to state 25
+    SEMICOLON  shift, and go to state 26
 
 
 state 13
 
-    7 declarations: declarations CONST @3 . identifier_list SEMICOLON
+    5 declarations: declarations VAR @2 . identifier_list SEMICOLON
 
-    ID  shift, and go to state 23
+    ID  shift, and go to state 27
 
-    identifier_list  go to state 26
-    identifier       go to state 25
+    identifier_list  go to state 28
+    identifier       go to state 29
 
 
 state 14
 
-   16 statement: IF . LPAR expression RPAR statement ELSE statement
-   17          | IF . LPAR expression RPAR statement
+    8 declarations: declarations CONST error . SEMICOLON
 
-    LPAR  shift, and go to state 27
+    SEMICOLON  shift, and go to state 30
 
 
 state 15
 
-   19 statement: WHILE . LPAR expression RPAR statement
+    7 declarations: declarations CONST @3 . identifier_list SEMICOLON
 
-    LPAR  shift, and go to state 28
+    ID  shift, and go to state 27
+
+    identifier_list  go to state 31
+    identifier       go to state 29
 
 
 state 16
 
-   20 statement: PRINT . LPAR print_list RPAR SEMICOLON
+   24 statement: error .
 
-    LPAR  shift, and go to state 29
+    $default  reduce using rule 24 (statement)
 
 
 state 17
 
-   21 statement: READ . LPAR read_list RPAR SEMICOLON
+   18 statement: IF . LPAR expression RPAR statement ELSE statement
+   19          | IF . LPAR expression RPAR statement
 
-    LPAR  shift, and go to state 30
+    LPAR  shift, and go to state 32
 
 
 state 18
 
-   18 statement: DO . statement WHILE LPAR expression RPAR
+   21 statement: WHILE . LPAR expression RPAR statement
 
-    IF     shift, and go to state 14
-    WHILE  shift, and go to state 15
-    PRINT  shift, and go to state 16
-    READ   shift, and go to state 17
-    DO     shift, and go to state 18
-    LKEY   shift, and go to state 19
-    ID     shift, and go to state 21
-
-    statement  go to state 31
+    LPAR  shift, and go to state 33
 
 
 state 19
 
-   15 statement: LKEY . statement_list RKEY
+   22 statement: PRINT . LPAR print_list RPAR SEMICOLON
 
-    $default  reduce using rule 12 (statement_list)
-
-    statement_list  go to state 32
+    LPAR  shift, and go to state 34
 
 
 state 20
+
+   23 statement: READ . LPAR read_list RPAR SEMICOLON
+
+    LPAR  shift, and go to state 35
+
+
+state 21
+
+   20 statement: DO . statement WHILE LPAR expression RPAR
+
+    error  shift, and go to state 16
+    IF     shift, and go to state 17
+    WHILE  shift, and go to state 18
+    PRINT  shift, and go to state 19
+    READ   shift, and go to state 20
+    DO     shift, and go to state 21
+    LKEY   shift, and go to state 22
+    ID     shift, and go to state 24
+
+    statement  go to state 36
+
+
+state 22
+
+   17 statement: LKEY . statement_list RKEY
+
+    $default  reduce using rule 14 (statement_list)
+
+    statement_list  go to state 37
+
+
+state 23
 
     2 program: @1 ID LPAR RPAR LKEY declarations statement_list RKEY .
 
     $default  reduce using rule 2 (program)
 
 
-state 21
-
-   14 statement: ID . EQUALS expression SEMICOLON
-
-    EQUALS  shift, and go to state 33
-
-
-state 22
-
-   13 statement_list: statement_list statement .
-
-    $default  reduce using rule 13 (statement_list)
-
-
-state 23
-
-   10 identifier: ID .
-   11           | ID . EQUALS expression
-
-    EQUALS  shift, and go to state 34
-
-    $default  reduce using rule 10 (identifier)
-
-
 state 24
 
-    5 declarations: declarations VAR @2 identifier_list . SEMICOLON
-    9 identifier_list: identifier_list . COMMA identifier
+   16 statement: ID . EQUALS expression SEMICOLON
 
-    SEMICOLON  shift, and go to state 35
-    COMMA      shift, and go to state 36
+    EQUALS  shift, and go to state 38
 
 
 state 25
 
-    8 identifier_list: identifier .
+   15 statement_list: statement_list statement .
 
-    $default  reduce using rule 8 (identifier_list)
+    $default  reduce using rule 15 (statement_list)
 
 
 state 26
 
-    7 declarations: declarations CONST @3 identifier_list . SEMICOLON
-    9 identifier_list: identifier_list . COMMA identifier
+    9 declarations: declarations VAR error SEMICOLON .
 
-    SEMICOLON  shift, and go to state 37
-    COMMA      shift, and go to state 36
+    $default  reduce using rule 9 (declarations)
 
 
 state 27
 
-   16 statement: IF LPAR . expression RPAR statement ELSE statement
-   17          | IF LPAR . expression RPAR statement
+   12 identifier: ID .
+   13           | ID . EQUALS expression
 
-    MINUSOP  shift, and go to state 38
-    LPAR     shift, and go to state 39
-    ID       shift, and go to state 40
-    NUMBER   shift, and go to state 41
+    EQUALS  shift, and go to state 39
 
-    expression  go to state 42
+    $default  reduce using rule 12 (identifier)
 
 
 state 28
 
-   19 statement: WHILE LPAR . expression RPAR statement
+    5 declarations: declarations VAR @2 identifier_list . SEMICOLON
+   11 identifier_list: identifier_list . COMMA identifier
 
-    MINUSOP  shift, and go to state 38
-    LPAR     shift, and go to state 39
-    ID       shift, and go to state 40
-    NUMBER   shift, and go to state 41
-
-    expression  go to state 43
+    SEMICOLON  shift, and go to state 40
+    COMMA      shift, and go to state 41
 
 
 state 29
 
-   20 statement: PRINT LPAR . print_list RPAR SEMICOLON
+   10 identifier_list: identifier .
 
-    MINUSOP  shift, and go to state 38
-    LPAR     shift, and go to state 39
-    STRING   shift, and go to state 44
-    ID       shift, and go to state 40
-    NUMBER   shift, and go to state 41
-
-    print_list  go to state 45
-    print_item  go to state 46
-    expression  go to state 47
+    $default  reduce using rule 10 (identifier_list)
 
 
 state 30
 
-   21 statement: READ LPAR . read_list RPAR SEMICOLON
+    8 declarations: declarations CONST error SEMICOLON .
 
-    ID  shift, and go to state 48
-
-    read_list  go to state 49
+    $default  reduce using rule 8 (declarations)
 
 
 state 31
 
-   18 statement: DO statement . WHILE LPAR expression RPAR
+    7 declarations: declarations CONST @3 identifier_list . SEMICOLON
+   11 identifier_list: identifier_list . COMMA identifier
 
-    WHILE  shift, and go to state 50
+    SEMICOLON  shift, and go to state 42
+    COMMA      shift, and go to state 41
 
 
 state 32
 
-   13 statement_list: statement_list . statement
-   15 statement: LKEY statement_list . RKEY
+   18 statement: IF LPAR . expression RPAR statement ELSE statement
+   19          | IF LPAR . expression RPAR statement
 
-    IF     shift, and go to state 14
-    WHILE  shift, and go to state 15
-    PRINT  shift, and go to state 16
-    READ   shift, and go to state 17
-    DO     shift, and go to state 18
-    LKEY   shift, and go to state 19
-    RKEY   shift, and go to state 51
-    ID     shift, and go to state 21
+    error    shift, and go to state 43
+    MINUSOP  shift, and go to state 44
+    LPAR     shift, and go to state 45
+    ID       shift, and go to state 46
+    NUMBER   shift, and go to state 47
 
-    statement  go to state 22
+    expression  go to state 48
 
 
 state 33
 
-   14 statement: ID EQUALS . expression SEMICOLON
+   21 statement: WHILE LPAR . expression RPAR statement
 
-    MINUSOP  shift, and go to state 38
-    LPAR     shift, and go to state 39
-    ID       shift, and go to state 40
-    NUMBER   shift, and go to state 41
+    error    shift, and go to state 43
+    MINUSOP  shift, and go to state 44
+    LPAR     shift, and go to state 45
+    ID       shift, and go to state 46
+    NUMBER   shift, and go to state 47
 
-    expression  go to state 52
+    expression  go to state 49
 
 
 state 34
 
-   11 identifier: ID EQUALS . expression
+   22 statement: PRINT LPAR . print_list RPAR SEMICOLON
 
-    MINUSOP  shift, and go to state 38
-    LPAR     shift, and go to state 39
-    ID       shift, and go to state 40
-    NUMBER   shift, and go to state 41
+    error    shift, and go to state 43
+    MINUSOP  shift, and go to state 44
+    LPAR     shift, and go to state 45
+    STRING   shift, and go to state 50
+    ID       shift, and go to state 46
+    NUMBER   shift, and go to state 47
 
+    print_list  go to state 51
+    print_item  go to state 52
     expression  go to state 53
 
 
 state 35
+
+   23 statement: READ LPAR . read_list RPAR SEMICOLON
+
+    ID  shift, and go to state 54
+
+    read_list  go to state 55
+
+
+state 36
+
+   20 statement: DO statement . WHILE LPAR expression RPAR
+
+    WHILE  shift, and go to state 56
+
+
+state 37
+
+   15 statement_list: statement_list . statement
+   17 statement: LKEY statement_list . RKEY
+
+    error  shift, and go to state 16
+    IF     shift, and go to state 17
+    WHILE  shift, and go to state 18
+    PRINT  shift, and go to state 19
+    READ   shift, and go to state 20
+    DO     shift, and go to state 21
+    LKEY   shift, and go to state 22
+    RKEY   shift, and go to state 57
+    ID     shift, and go to state 24
+
+    statement  go to state 25
+
+
+state 38
+
+   16 statement: ID EQUALS . expression SEMICOLON
+
+    error    shift, and go to state 43
+    MINUSOP  shift, and go to state 44
+    LPAR     shift, and go to state 45
+    ID       shift, and go to state 46
+    NUMBER   shift, and go to state 47
+
+    expression  go to state 58
+
+
+state 39
+
+   13 identifier: ID EQUALS . expression
+
+    error    shift, and go to state 43
+    MINUSOP  shift, and go to state 44
+    LPAR     shift, and go to state 45
+    ID       shift, and go to state 46
+    NUMBER   shift, and go to state 47
+
+    expression  go to state 59
+
+
+state 40
 
     5 declarations: declarations VAR @2 identifier_list SEMICOLON .
 
     $default  reduce using rule 5 (declarations)
 
 
-state 36
+state 41
 
-    9 identifier_list: identifier_list COMMA . identifier
+   11 identifier_list: identifier_list COMMA . identifier
 
-    ID  shift, and go to state 23
+    ID  shift, and go to state 27
 
-    identifier  go to state 54
+    identifier  go to state 60
 
 
-state 37
+state 42
 
     7 declarations: declarations CONST @3 identifier_list SEMICOLON .
 
     $default  reduce using rule 7 (declarations)
 
 
-state 38
-
-   32 expression: MINUSOP . expression
-
-    MINUSOP  shift, and go to state 38
-    LPAR     shift, and go to state 39
-    ID       shift, and go to state 40
-    NUMBER   shift, and go to state 41
-
-    expression  go to state 55
-
-
-state 39
-
-   33 expression: LPAR . expression RPAR
-
-    MINUSOP  shift, and go to state 38
-    LPAR     shift, and go to state 39
-    ID       shift, and go to state 40
-    NUMBER   shift, and go to state 41
-
-    expression  go to state 56
-
-
-state 40
-
-   34 expression: ID .
-
-    $default  reduce using rule 34 (expression)
-
-
-state 41
-
-   35 expression: NUMBER .
-
-    $default  reduce using rule 35 (expression)
-
-
-state 42
-
-   16 statement: IF LPAR expression . RPAR statement ELSE statement
-   17          | IF LPAR expression . RPAR statement
-   28 expression: expression . PLUSOP expression
-   29           | expression . MINUSOP expression
-   30           | expression . TIMES expression
-   31           | expression . DIV expression
-
-    PLUSOP   shift, and go to state 57
-    MINUSOP  shift, and go to state 58
-    TIMES    shift, and go to state 59
-    DIV      shift, and go to state 60
-    RPAR     shift, and go to state 61
-
-
 state 43
 
-   19 statement: WHILE LPAR expression . RPAR statement
-   28 expression: expression . PLUSOP expression
-   29           | expression . MINUSOP expression
-   30           | expression . TIMES expression
-   31           | expression . DIV expression
+   45 expression: error .
 
-    PLUSOP   shift, and go to state 57
-    MINUSOP  shift, and go to state 58
-    TIMES    shift, and go to state 59
-    DIV      shift, and go to state 60
-    RPAR     shift, and go to state 62
+    $default  reduce using rule 45 (expression)
 
 
 state 44
 
-   25 print_item: STRING .
+   35 expression: MINUSOP . expression
 
-    $default  reduce using rule 25 (print_item)
+    error    shift, and go to state 43
+    MINUSOP  shift, and go to state 44
+    LPAR     shift, and go to state 45
+    ID       shift, and go to state 46
+    NUMBER   shift, and go to state 47
+
+    expression  go to state 61
 
 
 state 45
 
-   20 statement: PRINT LPAR print_list . RPAR SEMICOLON
-   23 print_list: print_list . COMMA print_item
+   36 expression: LPAR . expression RPAR
 
-    COMMA  shift, and go to state 63
-    RPAR   shift, and go to state 64
+    error    shift, and go to state 43
+    MINUSOP  shift, and go to state 44
+    LPAR     shift, and go to state 45
+    ID       shift, and go to state 46
+    NUMBER   shift, and go to state 47
+
+    expression  go to state 62
 
 
 state 46
 
-   22 print_list: print_item .
+   43 expression: ID .
 
-    $default  reduce using rule 22 (print_list)
+    $default  reduce using rule 43 (expression)
 
 
 state 47
 
-   24 print_item: expression .
-   28 expression: expression . PLUSOP expression
-   29           | expression . MINUSOP expression
-   30           | expression . TIMES expression
-   31           | expression . DIV expression
+   44 expression: NUMBER .
 
-    PLUSOP   shift, and go to state 57
-    MINUSOP  shift, and go to state 58
-    TIMES    shift, and go to state 59
-    DIV      shift, and go to state 60
-
-    $default  reduce using rule 24 (print_item)
+    $default  reduce using rule 44 (expression)
 
 
 state 48
 
-   26 read_list: ID .
+   18 statement: IF LPAR expression . RPAR statement ELSE statement
+   19          | IF LPAR expression . RPAR statement
+   31 expression: expression . PLUSOP expression
+   32           | expression . MINUSOP expression
+   33           | expression . TIMES expression
+   34           | expression . DIV expression
+   37           | expression . GREATER expression
+   38           | expression . GEQUAL expression
+   39           | expression . LESS expression
+   40           | expression . LEQUAL expression
+   41           | expression . EEQUAL expression
+   42           | expression . NEQUAL expression
 
-    $default  reduce using rule 26 (read_list)
+    GREATER  shift, and go to state 63
+    GEQUAL   shift, and go to state 64
+    LESS     shift, and go to state 65
+    LEQUAL   shift, and go to state 66
+    EEQUAL   shift, and go to state 67
+    NEQUAL   shift, and go to state 68
+    PLUSOP   shift, and go to state 69
+    MINUSOP  shift, and go to state 70
+    TIMES    shift, and go to state 71
+    DIV      shift, and go to state 72
+    RPAR     shift, and go to state 73
 
 
 state 49
 
-   21 statement: READ LPAR read_list . RPAR SEMICOLON
-   27 read_list: read_list . COMMA ID
+   21 statement: WHILE LPAR expression . RPAR statement
+   31 expression: expression . PLUSOP expression
+   32           | expression . MINUSOP expression
+   33           | expression . TIMES expression
+   34           | expression . DIV expression
+   37           | expression . GREATER expression
+   38           | expression . GEQUAL expression
+   39           | expression . LESS expression
+   40           | expression . LEQUAL expression
+   41           | expression . EEQUAL expression
+   42           | expression . NEQUAL expression
 
-    COMMA  shift, and go to state 65
-    RPAR   shift, and go to state 66
+    GREATER  shift, and go to state 63
+    GEQUAL   shift, and go to state 64
+    LESS     shift, and go to state 65
+    LEQUAL   shift, and go to state 66
+    EEQUAL   shift, and go to state 67
+    NEQUAL   shift, and go to state 68
+    PLUSOP   shift, and go to state 69
+    MINUSOP  shift, and go to state 70
+    TIMES    shift, and go to state 71
+    DIV      shift, and go to state 72
+    RPAR     shift, and go to state 74
 
 
 state 50
 
-   18 statement: DO statement WHILE . LPAR expression RPAR
+   28 print_item: STRING .
 
-    LPAR  shift, and go to state 67
+    $default  reduce using rule 28 (print_item)
 
 
 state 51
 
-   15 statement: LKEY statement_list RKEY .
+   22 statement: PRINT LPAR print_list . RPAR SEMICOLON
+   26 print_list: print_list . COMMA print_item
 
-    $default  reduce using rule 15 (statement)
+    COMMA  shift, and go to state 75
+    RPAR   shift, and go to state 76
 
 
 state 52
 
-   14 statement: ID EQUALS expression . SEMICOLON
-   28 expression: expression . PLUSOP expression
-   29           | expression . MINUSOP expression
-   30           | expression . TIMES expression
-   31           | expression . DIV expression
+   25 print_list: print_item .
 
-    SEMICOLON  shift, and go to state 68
-    PLUSOP     shift, and go to state 57
-    MINUSOP    shift, and go to state 58
-    TIMES      shift, and go to state 59
-    DIV        shift, and go to state 60
+    $default  reduce using rule 25 (print_list)
 
 
 state 53
 
-   11 identifier: ID EQUALS expression .
-   28 expression: expression . PLUSOP expression
-   29           | expression . MINUSOP expression
-   30           | expression . TIMES expression
-   31           | expression . DIV expression
+   27 print_item: expression .
+   31 expression: expression . PLUSOP expression
+   32           | expression . MINUSOP expression
+   33           | expression . TIMES expression
+   34           | expression . DIV expression
+   37           | expression . GREATER expression
+   38           | expression . GEQUAL expression
+   39           | expression . LESS expression
+   40           | expression . LEQUAL expression
+   41           | expression . EEQUAL expression
+   42           | expression . NEQUAL expression
 
-    PLUSOP   shift, and go to state 57
-    MINUSOP  shift, and go to state 58
-    TIMES    shift, and go to state 59
-    DIV      shift, and go to state 60
+    GREATER  shift, and go to state 63
+    GEQUAL   shift, and go to state 64
+    LESS     shift, and go to state 65
+    LEQUAL   shift, and go to state 66
+    EEQUAL   shift, and go to state 67
+    NEQUAL   shift, and go to state 68
+    PLUSOP   shift, and go to state 69
+    MINUSOP  shift, and go to state 70
+    TIMES    shift, and go to state 71
+    DIV      shift, and go to state 72
 
-    $default  reduce using rule 11 (identifier)
+    $default  reduce using rule 27 (print_item)
 
 
 state 54
 
-    9 identifier_list: identifier_list COMMA identifier .
+   29 read_list: ID .
 
-    $default  reduce using rule 9 (identifier_list)
+    $default  reduce using rule 29 (read_list)
 
 
 state 55
 
-   28 expression: expression . PLUSOP expression
-   29           | expression . MINUSOP expression
-   30           | expression . TIMES expression
-   31           | expression . DIV expression
-   32           | MINUSOP expression .
+   23 statement: READ LPAR read_list . RPAR SEMICOLON
+   30 read_list: read_list . COMMA ID
 
-    $default  reduce using rule 32 (expression)
+    COMMA  shift, and go to state 77
+    RPAR   shift, and go to state 78
 
 
 state 56
 
-   28 expression: expression . PLUSOP expression
-   29           | expression . MINUSOP expression
-   30           | expression . TIMES expression
-   31           | expression . DIV expression
-   33           | LPAR expression . RPAR
+   20 statement: DO statement WHILE . LPAR expression RPAR
 
-    PLUSOP   shift, and go to state 57
-    MINUSOP  shift, and go to state 58
-    TIMES    shift, and go to state 59
-    DIV      shift, and go to state 60
-    RPAR     shift, and go to state 69
+    LPAR  shift, and go to state 79
 
 
 state 57
 
-   28 expression: expression PLUSOP . expression
+   17 statement: LKEY statement_list RKEY .
 
-    MINUSOP  shift, and go to state 38
-    LPAR     shift, and go to state 39
-    ID       shift, and go to state 40
-    NUMBER   shift, and go to state 41
-
-    expression  go to state 70
+    $default  reduce using rule 17 (statement)
 
 
 state 58
 
-   29 expression: expression MINUSOP . expression
+   16 statement: ID EQUALS expression . SEMICOLON
+   31 expression: expression . PLUSOP expression
+   32           | expression . MINUSOP expression
+   33           | expression . TIMES expression
+   34           | expression . DIV expression
+   37           | expression . GREATER expression
+   38           | expression . GEQUAL expression
+   39           | expression . LESS expression
+   40           | expression . LEQUAL expression
+   41           | expression . EEQUAL expression
+   42           | expression . NEQUAL expression
 
-    MINUSOP  shift, and go to state 38
-    LPAR     shift, and go to state 39
-    ID       shift, and go to state 40
-    NUMBER   shift, and go to state 41
-
-    expression  go to state 71
+    GREATER    shift, and go to state 63
+    GEQUAL     shift, and go to state 64
+    LESS       shift, and go to state 65
+    LEQUAL     shift, and go to state 66
+    EEQUAL     shift, and go to state 67
+    NEQUAL     shift, and go to state 68
+    SEMICOLON  shift, and go to state 80
+    PLUSOP     shift, and go to state 69
+    MINUSOP    shift, and go to state 70
+    TIMES      shift, and go to state 71
+    DIV        shift, and go to state 72
 
 
 state 59
 
-   30 expression: expression TIMES . expression
+   13 identifier: ID EQUALS expression .
+   31 expression: expression . PLUSOP expression
+   32           | expression . MINUSOP expression
+   33           | expression . TIMES expression
+   34           | expression . DIV expression
+   37           | expression . GREATER expression
+   38           | expression . GEQUAL expression
+   39           | expression . LESS expression
+   40           | expression . LEQUAL expression
+   41           | expression . EEQUAL expression
+   42           | expression . NEQUAL expression
 
-    MINUSOP  shift, and go to state 38
-    LPAR     shift, and go to state 39
-    ID       shift, and go to state 40
-    NUMBER   shift, and go to state 41
+    GREATER  shift, and go to state 63
+    GEQUAL   shift, and go to state 64
+    LESS     shift, and go to state 65
+    LEQUAL   shift, and go to state 66
+    EEQUAL   shift, and go to state 67
+    NEQUAL   shift, and go to state 68
+    PLUSOP   shift, and go to state 69
+    MINUSOP  shift, and go to state 70
+    TIMES    shift, and go to state 71
+    DIV      shift, and go to state 72
 
-    expression  go to state 72
+    $default  reduce using rule 13 (identifier)
 
 
 state 60
 
-   31 expression: expression DIV . expression
+   11 identifier_list: identifier_list COMMA identifier .
 
-    MINUSOP  shift, and go to state 38
-    LPAR     shift, and go to state 39
-    ID       shift, and go to state 40
-    NUMBER   shift, and go to state 41
-
-    expression  go to state 73
+    $default  reduce using rule 11 (identifier_list)
 
 
 state 61
 
-   16 statement: IF LPAR expression RPAR . statement ELSE statement
-   17          | IF LPAR expression RPAR . statement
+   31 expression: expression . PLUSOP expression
+   32           | expression . MINUSOP expression
+   33           | expression . TIMES expression
+   34           | expression . DIV expression
+   35           | MINUSOP expression .
+   37           | expression . GREATER expression
+   38           | expression . GEQUAL expression
+   39           | expression . LESS expression
+   40           | expression . LEQUAL expression
+   41           | expression . EEQUAL expression
+   42           | expression . NEQUAL expression
 
-    IF     shift, and go to state 14
-    WHILE  shift, and go to state 15
-    PRINT  shift, and go to state 16
-    READ   shift, and go to state 17
-    DO     shift, and go to state 18
-    LKEY   shift, and go to state 19
-    ID     shift, and go to state 21
-
-    statement  go to state 74
+    $default  reduce using rule 35 (expression)
 
 
 state 62
 
-   19 statement: WHILE LPAR expression RPAR . statement
+   31 expression: expression . PLUSOP expression
+   32           | expression . MINUSOP expression
+   33           | expression . TIMES expression
+   34           | expression . DIV expression
+   36           | LPAR expression . RPAR
+   37           | expression . GREATER expression
+   38           | expression . GEQUAL expression
+   39           | expression . LESS expression
+   40           | expression . LEQUAL expression
+   41           | expression . EEQUAL expression
+   42           | expression . NEQUAL expression
 
-    IF     shift, and go to state 14
-    WHILE  shift, and go to state 15
-    PRINT  shift, and go to state 16
-    READ   shift, and go to state 17
-    DO     shift, and go to state 18
-    LKEY   shift, and go to state 19
-    ID     shift, and go to state 21
-
-    statement  go to state 75
+    GREATER  shift, and go to state 63
+    GEQUAL   shift, and go to state 64
+    LESS     shift, and go to state 65
+    LEQUAL   shift, and go to state 66
+    EEQUAL   shift, and go to state 67
+    NEQUAL   shift, and go to state 68
+    PLUSOP   shift, and go to state 69
+    MINUSOP  shift, and go to state 70
+    TIMES    shift, and go to state 71
+    DIV      shift, and go to state 72
+    RPAR     shift, and go to state 81
 
 
 state 63
 
-   23 print_list: print_list COMMA . print_item
+   37 expression: expression GREATER . expression
 
-    MINUSOP  shift, and go to state 38
-    LPAR     shift, and go to state 39
-    STRING   shift, and go to state 44
-    ID       shift, and go to state 40
-    NUMBER   shift, and go to state 41
+    error    shift, and go to state 43
+    MINUSOP  shift, and go to state 44
+    LPAR     shift, and go to state 45
+    ID       shift, and go to state 46
+    NUMBER   shift, and go to state 47
 
-    print_item  go to state 76
-    expression  go to state 47
+    expression  go to state 82
 
 
 state 64
 
-   20 statement: PRINT LPAR print_list RPAR . SEMICOLON
+   38 expression: expression GEQUAL . expression
 
-    SEMICOLON  shift, and go to state 77
+    error    shift, and go to state 43
+    MINUSOP  shift, and go to state 44
+    LPAR     shift, and go to state 45
+    ID       shift, and go to state 46
+    NUMBER   shift, and go to state 47
+
+    expression  go to state 83
 
 
 state 65
 
-   27 read_list: read_list COMMA . ID
+   39 expression: expression LESS . expression
 
-    ID  shift, and go to state 78
+    error    shift, and go to state 43
+    MINUSOP  shift, and go to state 44
+    LPAR     shift, and go to state 45
+    ID       shift, and go to state 46
+    NUMBER   shift, and go to state 47
+
+    expression  go to state 84
 
 
 state 66
 
-   21 statement: READ LPAR read_list RPAR . SEMICOLON
+   40 expression: expression LEQUAL . expression
 
-    SEMICOLON  shift, and go to state 79
+    error    shift, and go to state 43
+    MINUSOP  shift, and go to state 44
+    LPAR     shift, and go to state 45
+    ID       shift, and go to state 46
+    NUMBER   shift, and go to state 47
+
+    expression  go to state 85
 
 
 state 67
 
-   18 statement: DO statement WHILE LPAR . expression RPAR
+   41 expression: expression EEQUAL . expression
 
-    MINUSOP  shift, and go to state 38
-    LPAR     shift, and go to state 39
-    ID       shift, and go to state 40
-    NUMBER   shift, and go to state 41
+    error    shift, and go to state 43
+    MINUSOP  shift, and go to state 44
+    LPAR     shift, and go to state 45
+    ID       shift, and go to state 46
+    NUMBER   shift, and go to state 47
 
-    expression  go to state 80
+    expression  go to state 86
 
 
 state 68
 
-   14 statement: ID EQUALS expression SEMICOLON .
+   42 expression: expression NEQUAL . expression
 
-    $default  reduce using rule 14 (statement)
+    error    shift, and go to state 43
+    MINUSOP  shift, and go to state 44
+    LPAR     shift, and go to state 45
+    ID       shift, and go to state 46
+    NUMBER   shift, and go to state 47
+
+    expression  go to state 87
 
 
 state 69
 
-   33 expression: LPAR expression RPAR .
+   31 expression: expression PLUSOP . expression
 
-    $default  reduce using rule 33 (expression)
+    error    shift, and go to state 43
+    MINUSOP  shift, and go to state 44
+    LPAR     shift, and go to state 45
+    ID       shift, and go to state 46
+    NUMBER   shift, and go to state 47
+
+    expression  go to state 88
 
 
 state 70
 
-   28 expression: expression . PLUSOP expression
-   28           | expression PLUSOP expression .
-   29           | expression . MINUSOP expression
-   30           | expression . TIMES expression
-   31           | expression . DIV expression
+   32 expression: expression MINUSOP . expression
 
-    TIMES  shift, and go to state 59
-    DIV    shift, and go to state 60
+    error    shift, and go to state 43
+    MINUSOP  shift, and go to state 44
+    LPAR     shift, and go to state 45
+    ID       shift, and go to state 46
+    NUMBER   shift, and go to state 47
 
-    $default  reduce using rule 28 (expression)
+    expression  go to state 89
 
 
 state 71
 
-   28 expression: expression . PLUSOP expression
-   29           | expression . MINUSOP expression
-   29           | expression MINUSOP expression .
-   30           | expression . TIMES expression
-   31           | expression . DIV expression
+   33 expression: expression TIMES . expression
 
-    TIMES  shift, and go to state 59
-    DIV    shift, and go to state 60
+    error    shift, and go to state 43
+    MINUSOP  shift, and go to state 44
+    LPAR     shift, and go to state 45
+    ID       shift, and go to state 46
+    NUMBER   shift, and go to state 47
 
-    $default  reduce using rule 29 (expression)
+    expression  go to state 90
 
 
 state 72
 
-   28 expression: expression . PLUSOP expression
-   29           | expression . MINUSOP expression
-   30           | expression . TIMES expression
-   30           | expression TIMES expression .
-   31           | expression . DIV expression
+   34 expression: expression DIV . expression
 
-    $default  reduce using rule 30 (expression)
+    error    shift, and go to state 43
+    MINUSOP  shift, and go to state 44
+    LPAR     shift, and go to state 45
+    ID       shift, and go to state 46
+    NUMBER   shift, and go to state 47
+
+    expression  go to state 91
 
 
 state 73
 
-   28 expression: expression . PLUSOP expression
-   29           | expression . MINUSOP expression
-   30           | expression . TIMES expression
-   31           | expression . DIV expression
-   31           | expression DIV expression .
+   18 statement: IF LPAR expression RPAR . statement ELSE statement
+   19          | IF LPAR expression RPAR . statement
 
-    $default  reduce using rule 31 (expression)
+    error  shift, and go to state 16
+    IF     shift, and go to state 17
+    WHILE  shift, and go to state 18
+    PRINT  shift, and go to state 19
+    READ   shift, and go to state 20
+    DO     shift, and go to state 21
+    LKEY   shift, and go to state 22
+    ID     shift, and go to state 24
+
+    statement  go to state 92
 
 
 state 74
 
-   16 statement: IF LPAR expression RPAR statement . ELSE statement
-   17          | IF LPAR expression RPAR statement .
+   21 statement: WHILE LPAR expression RPAR . statement
 
-    ELSE  shift, and go to state 81
+    error  shift, and go to state 16
+    IF     shift, and go to state 17
+    WHILE  shift, and go to state 18
+    PRINT  shift, and go to state 19
+    READ   shift, and go to state 20
+    DO     shift, and go to state 21
+    LKEY   shift, and go to state 22
+    ID     shift, and go to state 24
 
-    ELSE      [reduce using rule 17 (statement)]
-    $default  reduce using rule 17 (statement)
+    statement  go to state 93
 
 
 state 75
 
-   19 statement: WHILE LPAR expression RPAR statement .
+   26 print_list: print_list COMMA . print_item
 
-    $default  reduce using rule 19 (statement)
+    error    shift, and go to state 43
+    MINUSOP  shift, and go to state 44
+    LPAR     shift, and go to state 45
+    STRING   shift, and go to state 50
+    ID       shift, and go to state 46
+    NUMBER   shift, and go to state 47
+
+    print_item  go to state 94
+    expression  go to state 53
 
 
 state 76
 
-   23 print_list: print_list COMMA print_item .
+   22 statement: PRINT LPAR print_list RPAR . SEMICOLON
 
-    $default  reduce using rule 23 (print_list)
+    SEMICOLON  shift, and go to state 95
 
 
 state 77
 
-   20 statement: PRINT LPAR print_list RPAR SEMICOLON .
+   30 read_list: read_list COMMA . ID
 
-    $default  reduce using rule 20 (statement)
+    ID  shift, and go to state 96
 
 
 state 78
 
-   27 read_list: read_list COMMA ID .
+   23 statement: READ LPAR read_list RPAR . SEMICOLON
 
-    $default  reduce using rule 27 (read_list)
+    SEMICOLON  shift, and go to state 97
 
 
 state 79
 
-   21 statement: READ LPAR read_list RPAR SEMICOLON .
+   20 statement: DO statement WHILE LPAR . expression RPAR
 
-    $default  reduce using rule 21 (statement)
+    error    shift, and go to state 43
+    MINUSOP  shift, and go to state 44
+    LPAR     shift, and go to state 45
+    ID       shift, and go to state 46
+    NUMBER   shift, and go to state 47
+
+    expression  go to state 98
 
 
 state 80
 
-   18 statement: DO statement WHILE LPAR expression . RPAR
-   28 expression: expression . PLUSOP expression
-   29           | expression . MINUSOP expression
-   30           | expression . TIMES expression
-   31           | expression . DIV expression
+   16 statement: ID EQUALS expression SEMICOLON .
 
-    PLUSOP   shift, and go to state 57
-    MINUSOP  shift, and go to state 58
-    TIMES    shift, and go to state 59
-    DIV      shift, and go to state 60
-    RPAR     shift, and go to state 82
+    $default  reduce using rule 16 (statement)
 
 
 state 81
 
-   16 statement: IF LPAR expression RPAR statement ELSE . statement
+   36 expression: LPAR expression RPAR .
 
-    IF     shift, and go to state 14
-    WHILE  shift, and go to state 15
-    PRINT  shift, and go to state 16
-    READ   shift, and go to state 17
-    DO     shift, and go to state 18
-    LKEY   shift, and go to state 19
-    ID     shift, and go to state 21
-
-    statement  go to state 83
+    $default  reduce using rule 36 (expression)
 
 
 state 82
 
-   18 statement: DO statement WHILE LPAR expression RPAR .
+   31 expression: expression . PLUSOP expression
+   32           | expression . MINUSOP expression
+   33           | expression . TIMES expression
+   34           | expression . DIV expression
+   37           | expression . GREATER expression
+   37           | expression GREATER expression .
+   38           | expression . GEQUAL expression
+   39           | expression . LESS expression
+   40           | expression . LEQUAL expression
+   41           | expression . EEQUAL expression
+   42           | expression . NEQUAL expression
 
-    $default  reduce using rule 18 (statement)
+    PLUSOP   shift, and go to state 69
+    MINUSOP  shift, and go to state 70
+    TIMES    shift, and go to state 71
+    DIV      shift, and go to state 72
+
+    GREATER  error (nonassociative)
+    GEQUAL   error (nonassociative)
+    LESS     error (nonassociative)
+    LEQUAL   error (nonassociative)
+    EEQUAL   error (nonassociative)
+    NEQUAL   error (nonassociative)
+
+    $default  reduce using rule 37 (expression)
 
 
 state 83
 
-   16 statement: IF LPAR expression RPAR statement ELSE statement .
+   31 expression: expression . PLUSOP expression
+   32           | expression . MINUSOP expression
+   33           | expression . TIMES expression
+   34           | expression . DIV expression
+   37           | expression . GREATER expression
+   38           | expression . GEQUAL expression
+   38           | expression GEQUAL expression .
+   39           | expression . LESS expression
+   40           | expression . LEQUAL expression
+   41           | expression . EEQUAL expression
+   42           | expression . NEQUAL expression
 
-    $default  reduce using rule 16 (statement)
+    PLUSOP   shift, and go to state 69
+    MINUSOP  shift, and go to state 70
+    TIMES    shift, and go to state 71
+    DIV      shift, and go to state 72
+
+    GREATER  error (nonassociative)
+    GEQUAL   error (nonassociative)
+    LESS     error (nonassociative)
+    LEQUAL   error (nonassociative)
+    EEQUAL   error (nonassociative)
+    NEQUAL   error (nonassociative)
+
+    $default  reduce using rule 38 (expression)
+
+
+state 84
+
+   31 expression: expression . PLUSOP expression
+   32           | expression . MINUSOP expression
+   33           | expression . TIMES expression
+   34           | expression . DIV expression
+   37           | expression . GREATER expression
+   38           | expression . GEQUAL expression
+   39           | expression . LESS expression
+   39           | expression LESS expression .
+   40           | expression . LEQUAL expression
+   41           | expression . EEQUAL expression
+   42           | expression . NEQUAL expression
+
+    PLUSOP   shift, and go to state 69
+    MINUSOP  shift, and go to state 70
+    TIMES    shift, and go to state 71
+    DIV      shift, and go to state 72
+
+    GREATER  error (nonassociative)
+    GEQUAL   error (nonassociative)
+    LESS     error (nonassociative)
+    LEQUAL   error (nonassociative)
+    EEQUAL   error (nonassociative)
+    NEQUAL   error (nonassociative)
+
+    $default  reduce using rule 39 (expression)
+
+
+state 85
+
+   31 expression: expression . PLUSOP expression
+   32           | expression . MINUSOP expression
+   33           | expression . TIMES expression
+   34           | expression . DIV expression
+   37           | expression . GREATER expression
+   38           | expression . GEQUAL expression
+   39           | expression . LESS expression
+   40           | expression . LEQUAL expression
+   40           | expression LEQUAL expression .
+   41           | expression . EEQUAL expression
+   42           | expression . NEQUAL expression
+
+    PLUSOP   shift, and go to state 69
+    MINUSOP  shift, and go to state 70
+    TIMES    shift, and go to state 71
+    DIV      shift, and go to state 72
+
+    GREATER  error (nonassociative)
+    GEQUAL   error (nonassociative)
+    LESS     error (nonassociative)
+    LEQUAL   error (nonassociative)
+    EEQUAL   error (nonassociative)
+    NEQUAL   error (nonassociative)
+
+    $default  reduce using rule 40 (expression)
+
+
+state 86
+
+   31 expression: expression . PLUSOP expression
+   32           | expression . MINUSOP expression
+   33           | expression . TIMES expression
+   34           | expression . DIV expression
+   37           | expression . GREATER expression
+   38           | expression . GEQUAL expression
+   39           | expression . LESS expression
+   40           | expression . LEQUAL expression
+   41           | expression . EEQUAL expression
+   41           | expression EEQUAL expression .
+   42           | expression . NEQUAL expression
+
+    PLUSOP   shift, and go to state 69
+    MINUSOP  shift, and go to state 70
+    TIMES    shift, and go to state 71
+    DIV      shift, and go to state 72
+
+    GREATER  error (nonassociative)
+    GEQUAL   error (nonassociative)
+    LESS     error (nonassociative)
+    LEQUAL   error (nonassociative)
+    EEQUAL   error (nonassociative)
+    NEQUAL   error (nonassociative)
+
+    $default  reduce using rule 41 (expression)
+
+
+state 87
+
+   31 expression: expression . PLUSOP expression
+   32           | expression . MINUSOP expression
+   33           | expression . TIMES expression
+   34           | expression . DIV expression
+   37           | expression . GREATER expression
+   38           | expression . GEQUAL expression
+   39           | expression . LESS expression
+   40           | expression . LEQUAL expression
+   41           | expression . EEQUAL expression
+   42           | expression . NEQUAL expression
+   42           | expression NEQUAL expression .
+
+    PLUSOP   shift, and go to state 69
+    MINUSOP  shift, and go to state 70
+    TIMES    shift, and go to state 71
+    DIV      shift, and go to state 72
+
+    GREATER  error (nonassociative)
+    GEQUAL   error (nonassociative)
+    LESS     error (nonassociative)
+    LEQUAL   error (nonassociative)
+    EEQUAL   error (nonassociative)
+    NEQUAL   error (nonassociative)
+
+    $default  reduce using rule 42 (expression)
+
+
+state 88
+
+   31 expression: expression . PLUSOP expression
+   31           | expression PLUSOP expression .
+   32           | expression . MINUSOP expression
+   33           | expression . TIMES expression
+   34           | expression . DIV expression
+   37           | expression . GREATER expression
+   38           | expression . GEQUAL expression
+   39           | expression . LESS expression
+   40           | expression . LEQUAL expression
+   41           | expression . EEQUAL expression
+   42           | expression . NEQUAL expression
+
+    TIMES  shift, and go to state 71
+    DIV    shift, and go to state 72
+
+    $default  reduce using rule 31 (expression)
+
+
+state 89
+
+   31 expression: expression . PLUSOP expression
+   32           | expression . MINUSOP expression
+   32           | expression MINUSOP expression .
+   33           | expression . TIMES expression
+   34           | expression . DIV expression
+   37           | expression . GREATER expression
+   38           | expression . GEQUAL expression
+   39           | expression . LESS expression
+   40           | expression . LEQUAL expression
+   41           | expression . EEQUAL expression
+   42           | expression . NEQUAL expression
+
+    TIMES  shift, and go to state 71
+    DIV    shift, and go to state 72
+
+    $default  reduce using rule 32 (expression)
+
+
+state 90
+
+   31 expression: expression . PLUSOP expression
+   32           | expression . MINUSOP expression
+   33           | expression . TIMES expression
+   33           | expression TIMES expression .
+   34           | expression . DIV expression
+   37           | expression . GREATER expression
+   38           | expression . GEQUAL expression
+   39           | expression . LESS expression
+   40           | expression . LEQUAL expression
+   41           | expression . EEQUAL expression
+   42           | expression . NEQUAL expression
+
+    $default  reduce using rule 33 (expression)
+
+
+state 91
+
+   31 expression: expression . PLUSOP expression
+   32           | expression . MINUSOP expression
+   33           | expression . TIMES expression
+   34           | expression . DIV expression
+   34           | expression DIV expression .
+   37           | expression . GREATER expression
+   38           | expression . GEQUAL expression
+   39           | expression . LESS expression
+   40           | expression . LEQUAL expression
+   41           | expression . EEQUAL expression
+   42           | expression . NEQUAL expression
+
+    $default  reduce using rule 34 (expression)
+
+
+state 92
+
+   18 statement: IF LPAR expression RPAR statement . ELSE statement
+   19          | IF LPAR expression RPAR statement .
+
+    ELSE  shift, and go to state 99
+
+    ELSE      [reduce using rule 19 (statement)]
+    $default  reduce using rule 19 (statement)
+
+
+state 93
+
+   21 statement: WHILE LPAR expression RPAR statement .
+
+    $default  reduce using rule 21 (statement)
+
+
+state 94
+
+   26 print_list: print_list COMMA print_item .
+
+    $default  reduce using rule 26 (print_list)
+
+
+state 95
+
+   22 statement: PRINT LPAR print_list RPAR SEMICOLON .
+
+    $default  reduce using rule 22 (statement)
+
+
+state 96
+
+   30 read_list: read_list COMMA ID .
+
+    $default  reduce using rule 30 (read_list)
+
+
+state 97
+
+   23 statement: READ LPAR read_list RPAR SEMICOLON .
+
+    $default  reduce using rule 23 (statement)
+
+
+state 98
+
+   20 statement: DO statement WHILE LPAR expression . RPAR
+   31 expression: expression . PLUSOP expression
+   32           | expression . MINUSOP expression
+   33           | expression . TIMES expression
+   34           | expression . DIV expression
+   37           | expression . GREATER expression
+   38           | expression . GEQUAL expression
+   39           | expression . LESS expression
+   40           | expression . LEQUAL expression
+   41           | expression . EEQUAL expression
+   42           | expression . NEQUAL expression
+
+    GREATER  shift, and go to state 63
+    GEQUAL   shift, and go to state 64
+    LESS     shift, and go to state 65
+    LEQUAL   shift, and go to state 66
+    EEQUAL   shift, and go to state 67
+    NEQUAL   shift, and go to state 68
+    PLUSOP   shift, and go to state 69
+    MINUSOP  shift, and go to state 70
+    TIMES    shift, and go to state 71
+    DIV      shift, and go to state 72
+    RPAR     shift, and go to state 100
+
+
+state 99
+
+   18 statement: IF LPAR expression RPAR statement ELSE . statement
+
+    error  shift, and go to state 16
+    IF     shift, and go to state 17
+    WHILE  shift, and go to state 18
+    PRINT  shift, and go to state 19
+    READ   shift, and go to state 20
+    DO     shift, and go to state 21
+    LKEY   shift, and go to state 22
+    ID     shift, and go to state 24
+
+    statement  go to state 101
+
+
+state 100
+
+   20 statement: DO statement WHILE LPAR expression RPAR .
+
+    $default  reduce using rule 20 (statement)
+
+
+state 101
+
+   18 statement: IF LPAR expression RPAR statement ELSE statement .
+
+    $default  reduce using rule 18 (statement)

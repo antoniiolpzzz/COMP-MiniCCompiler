@@ -24,9 +24,14 @@
 	Tipo symbolType;
 	int stringCount = 0;
 	
+	extern int lexicalErr;
+	int syntacticErr = 0;
+	int semanticErr = 0;
+	
 	void imprimirCodigo(ListaC codigo);
 	void liberarReg(char * registro);
 	void añadeEntrada(Lista lista, char * simbolo, Tipo tipo);
+	int numErrors();
 	char * obtenerReg();
 	char * newLabel();
 	char * concatenaStr(char * str0, char * str1);
@@ -41,47 +46,82 @@
 %type <cod> expression statement statement_list print_item print_list read_list declarations identifier_list identifier
 
 %token VAR CONST IF ELSE WHILE PRINT READ DO
+%token GREATER GEQUAL LESS LEQUAL EEQUAL NEQUAL
 %token SEMICOLON COMMA PLUSOP MINUSOP TIMES
 %token DIV EQUALS LPAR RPAR LKEY RKEY
 %token <str> STRING ID NUMBER
 
+%nonassoc GREATER GEQUAL LESS LEQUAL EEQUAL NEQUAL
 %left PLUSOP MINUSOP
 %left DIV TIMES
 %left UMINUS
 
+//%expect 1
+
 %%
 
-program			:	{symbolTable = creaLS();} ID LPAR RPAR LKEY declarations statement_list RKEY { imprimirTablaS(symbolTable); concatenaLC($6, $7); imprimirCodigo($6); liberaLS(symbolTable); liberaLC($6); }
+program			:	{symbolTable = creaLS();} ID LPAR RPAR LKEY declarations statement_list RKEY {
+	
+																if( numErrors() == 0){
+																	imprimirTablaS(symbolTable);
+																}
+																concatenaLC($6, $7);
+																if( numErrors() == 0){
+																	imprimirCodigo($6);
+																}
+																liberaLS(symbolTable);
+																liberaLC($6); 
+															}
 				;
+
 
 declarations		: { $$ = creaLC(); }
 
-				|	declarations VAR { symbolType = VARIABLE; } identifier_list SEMICOLON { $$ = $1;
+				|	declarations VAR { symbolType = VARIABLE; } identifier_list SEMICOLON {
+																							$$ = $1;
 																							concatenaLC($$, $4);
 																							liberaLC($4);
 																						}
 				
-				|	declarations CONST { symbolType = CONSTANTE; } identifier_list SEMICOLON { $$ = $1;
-																								concatenaLC($$, $4);
-																								liberaLC($4);
-																							}
+				|	declarations CONST { symbolType = CONSTANTE; } identifier_list SEMICOLON {
+																							$$ = $1;
+																							concatenaLC($$, $4);
+																							liberaLC($4);
+																						}
+				|	declarations CONST error SEMICOLON	{
+												$$ = creaLC();
+												guardaResLC($$, "" );
+												fprintf(stderr, "Linea %d: Error en la declaración de una constante\n", yylineno);
+												syntacticErr++;
+											}
+							
+				|	declarations VAR error SEMICOLON	{
+												$$ = creaLC();
+												guardaResLC($$, "" );
+												fprintf(stderr, "Linea %d: Error en la declaración de una variable\n", yylineno);
+												syntacticErr++;
+											}
+							
 				;
+			
 			
 identifier_list :	identifier											{ $$ = $1; }
 
-				|	identifier_list COMMA identifier					{ $$ = $1;
+				|	identifier_list COMMA identifier					{ 
+																		$$ = $1;
 																		concatenaLC($$, $3);
 																		liberaLC($3);
 																	}
 				;
 
-identifier		:	ID													{if (!perteneceTS(symbolTable, $1)) añadeEntrada(symbolTable, $1, symbolType); else printf("Error en linea %d: Variable %s ya declarada\n", yylineno, $1);
+
+identifier		:	ID													{if (!perteneceTS(symbolTable, $1)) añadeEntrada(symbolTable, $1, symbolType); else { fprintf(stderr, "Error en linea %d: Variable %s ya declarada\n", yylineno, $1); semanticErr++; }
 	
 																		$$ = creaLC(); 
 																		
 																	}
 
-				| 	ID EQUALS expression								{if (!perteneceTS(symbolTable, $1)) añadeEntrada(symbolTable, $1, symbolType); else printf("Error en linea %d: Variable %s ya declarada\n", yylineno, $1); 
+				| 	ID EQUALS expression								{if (!perteneceTS(symbolTable, $1)) añadeEntrada(symbolTable, $1, symbolType); else { fprintf(stderr, "Error en linea %d: Variable %s ya declarada\n", yylineno, $1); semanticErr++; }
 																		$$ = $3;
 																		
 																		Operacion oper;
@@ -91,20 +131,23 @@ identifier		:	ID													{if (!perteneceTS(symbolTable, $1)) añadeEntrada(s
 																		oper.arg1 = concatenaStr("_", $1);
 																		oper.arg2 = NULL;
 																		insertaLC($$, finalLC($$), oper);
-																		liberarReg(oper.arg1);
-																		//liberaLC($3); //PUEDE SER QUE ESTO NO SEA CORRECTO VIDEO
+																		liberarReg(oper.res);
+																		
 																	}
 				;
 			
+			
 statement_list	:														{ $$ = creaLC(); }
 
-				|	statement_list statement							{ $$ = $1;
+				|	statement_list statement							{
+																		$$ = $1;
 																		concatenaLC($$, $2);
 																		liberaLC($2);
 																	}
 				;
 
-statement		:	ID EQUALS expression SEMICOLON						{ if (!perteneceTS(symbolTable, $1)) printf("Error en linea %d: Variable %s no declarada\n", yylineno, $1); else if (esConstante(symbolTable,$1)) printf("Error en linea %d: %s es constante\n", yylineno, $1); 													
+
+statement		:	ID EQUALS expression SEMICOLON						{ if (!perteneceTS(symbolTable, $1)) { fprintf(stderr, "Error en linea %d: Variable %s no declarada\n", yylineno, $1); semanticErr++; } else { if (esConstante(symbolTable,$1)) { fprintf(stderr, "Error en linea %d: %s es constante\n", yylineno, $1); semanticErr++; } } 													
 																		
 																		$$ = $3;
 																		Operacion oper;
@@ -113,12 +156,8 @@ statement		:	ID EQUALS expression SEMICOLON						{ if (!perteneceTS(symbolTable,
 																		oper.arg1 = concatenaStr("_", $1);
 																		oper.arg2 = NULL;
 																		insertaLC($$, finalLC($$), oper);
-																		guardaResLC($$, oper.res);
 																		liberarReg(oper.res);
-																		//liberaLC($3); //PUEDE QUE ESTE MAL
-																		
-																		
-																		/*LIBERAR REGISTROS?*/ }
+																	}
 
 				|	LKEY statement_list RKEY							{ $$ = $2; }
 				
@@ -133,6 +172,7 @@ statement		:	ID EQUALS expression SEMICOLON						{ if (!perteneceTS(symbolTable,
 																		oper.arg1 = label_ELSE;
 																		oper.arg2 = NULL;
 																		insertaLC($$, finalLC($$), oper);
+																		liberarReg(oper.res);
 																		
 																		concatenaLC($$, $5);
 																		
@@ -156,9 +196,8 @@ statement		:	ID EQUALS expression SEMICOLON						{ if (!perteneceTS(symbolTable,
 																		oper.arg2 = NULL;
 																		insertaLC($$, finalLC($$), oper);
 																		
-																		liberaLC($5); //COMPROBAR SI HACE FALTA
-																		liberaLC($7); //COMPROBAR SI HACE FALTA
-																		
+																		liberaLC($5);
+																		liberaLC($7);
 																	}
 				
 				|	IF LPAR expression RPAR statement					{ $$ = $3;
@@ -171,6 +210,7 @@ statement		:	ID EQUALS expression SEMICOLON						{ if (!perteneceTS(symbolTable,
 																		oper.arg1 = label_END;
 																		oper.arg2 = NULL;
 																		insertaLC($$, finalLC($$), oper);
+																		liberarReg(oper.res);
 																		
 																		concatenaLC($$, $5);
 																		
@@ -180,7 +220,7 @@ statement		:	ID EQUALS expression SEMICOLON						{ if (!perteneceTS(symbolTable,
 																		oper.arg2 = NULL;
 																		insertaLC($$, finalLC($$), oper);
 																		
-																		liberaLC($5); //COMPROBAR SI HACE FALTA
+																		liberaLC($5);
 																	}
 													
 				|	DO statement WHILE LPAR expression RPAR 			{ $$ = creaLC();
@@ -204,7 +244,7 @@ statement		:	ID EQUALS expression SEMICOLON						{ if (!perteneceTS(symbolTable,
 																		oper.arg1 = label_ENDDW;
 																		oper.arg2 = NULL;
 																		insertaLC($$, finalLC($$), oper);
-					
+																		liberarReg(oper.res);
 																							
 																		oper.op = "b";
 																		oper.res = label_DOWHILE;
@@ -241,6 +281,7 @@ statement		:	ID EQUALS expression SEMICOLON						{ if (!perteneceTS(symbolTable,
 																		oper.arg1 = label_ENDW;
 																		oper.arg2 = NULL;
 																		insertaLC($$, finalLC($$), oper);
+																		liberarReg(oper.res);
 																		
 																		concatenaLC($$, $5);
 																		
@@ -265,15 +306,25 @@ statement		:	ID EQUALS expression SEMICOLON						{ if (!perteneceTS(symbolTable,
 				
 				
 				|	READ LPAR read_list RPAR SEMICOLON					{ $$ = $3; }
+				
+				|	error		{
+									$$ = creaLC();
+									guardaResLC($$, "" );
+									fprintf(stderr, "Linea %d: Error en una sentencia\n", yylineno);
+									syntacticErr++;
+								}
 				;
+				
 				
 print_list		:	print_item											{ $$ = $1;}
 
-				|	print_list COMMA print_item							{ $$ = $1;
+				|	print_list COMMA print_item							{
+																		$$ = $1;
 																		concatenaLC($$, $3);
 																		liberaLC($3);
 																	}
 				;
+				
 				
 print_item		:	expression											{ $$ = $1;
 																		Operacion oper;
@@ -296,7 +347,7 @@ print_item		:	expression											{ $$ = $1;
 																		oper.arg1 = NULL;
 																		oper.arg2 = NULL;
 																		insertaLC($$, finalLC($$), oper);
-																	}	
+																	}
 																	
 				|	STRING												{ añadeEntrada(symbolTable, $1, CADENA); 
 				
@@ -326,7 +377,7 @@ print_item		:	expression											{ $$ = $1;
 				;
 				
 				
-read_list		:	ID													{ if (!perteneceTS(symbolTable, $1)) printf("Error en linea %d: Variable %s no declarada\n", yylineno, $1); else if (esConstante(symbolTable,$1)) printf("Error en linea %d: %s es constante\n", yylineno, $1); 
+read_list		:	ID													{ if (!perteneceTS(symbolTable, $1)) { fprintf(stderr, "Error en linea %d: Variable %s no declarada\n", yylineno, $1); semanticErr++; } else { if (esConstante(symbolTable,$1)) { fprintf(stderr, "Error en linea %d: %s es constante\n", yylineno, $1); semanticErr++; } }
 																		$$ = creaLC(); /*$1;*/
 																		
 																		Operacion oper;
@@ -351,7 +402,7 @@ read_list		:	ID													{ if (!perteneceTS(symbolTable, $1)) printf("Error e
 
 }
 
-				|	read_list COMMA ID									{ if (!perteneceTS(symbolTable, $3)) printf("Error en linea %d: Variable %s no declarada\n", yylineno, $3); else if (esConstante(symbolTable,$3)) printf("Error en linea %d: %s es constante\n", yylineno, $3); 
+				|	read_list COMMA ID									{ if (!perteneceTS(symbolTable, $3)) { fprintf(stderr, "Error en linea %d: Variable %s no declarada\n", yylineno, $3); semanticErr++; } else { if (esConstante(symbolTable,$3)) { fprintf(stderr, "Error en linea %d: %s es constante\n", yylineno, $3); semanticErr++; } }
 					
 																		$$ = $1;
 					
@@ -434,13 +485,107 @@ expression		:	expression PLUSOP expression						{ $$ = $1;
 																		oper.arg2 = NULL;
 																		insertaLC($$, finalLC($$), oper);
 																		guardaResLC($$, oper.res);
-																		liberaLC($2);
-																		/*liberarReg(oper.arg1);*/ //PUEDE QUE SOBRE ESTO
 																	} 
 				
 				|	LPAR expression RPAR								{ $$ = $2; }
 				
-				|	ID													{ if (!perteneceTS(symbolTable, $1)) printf("Error en linea %d: Variable %s no declarada\n", yylineno, $1); 
+				|	expression GREATER expression					{
+																	$$ = $1;
+																	concatenaLC($$, $3);
+																	
+																	Operacion oper;
+																	oper.op = "slt";
+																	oper.res = recuperaResLC($1);
+																	oper.arg1 = recuperaResLC($3);
+																	oper.arg2 = recuperaResLC($1);
+																	insertaLC($$, finalLC($$), oper);
+																	guardaResLC($$, oper.res);
+																	
+																	liberaLC($3);
+																	liberarReg(oper.arg1);
+																}
+												
+				|	expression GEQUAL expression					{ $$ = $1;
+																	concatenaLC($$, $3);
+																	
+																	Operacion oper;
+																	oper.op = "sge";
+																	oper.res = recuperaResLC($1);
+																	oper.arg1 = recuperaResLC($1);
+																	oper.arg2 = recuperaResLC($3);
+																	insertaLC($$, finalLC($$), oper);
+																	guardaResLC($$, oper.res);
+																	
+																	liberaLC($3);
+																	liberarReg(oper.arg2);
+																}
+				
+				|	expression LESS expression						{ $$ = $1;
+																	concatenaLC($$, $3);
+																	
+																	Operacion oper;
+																	oper.op = "slt";
+																	oper.res = recuperaResLC($1);
+																	oper.arg1 = recuperaResLC($1);
+																	oper.arg2 = recuperaResLC($3);
+																	insertaLC($$, finalLC($$), oper);
+																	guardaResLC($$, oper.res);
+																	
+																	liberaLC($3);
+																	liberarReg(oper.arg2);
+				}
+
+				|	expression LEQUAL expression					{ $$ = $1;
+																	concatenaLC($$, $3);
+																	
+																	Operacion oper;
+																	oper.op = "sle";
+																	oper.res = recuperaResLC($1);
+																	oper.arg1 = recuperaResLC($1);
+																	oper.arg2 = recuperaResLC($3);
+																	insertaLC($$, finalLC($$), oper);
+																	guardaResLC($$, oper.res);
+																	
+																	liberaLC($3);
+																	liberarReg(oper.arg2);
+																}
+				
+				|	expression EEQUAL expression					{ $$ = $1;
+																	concatenaLC($$, $3);
+																	
+																	Operacion oper;
+																	oper.op = "seq";
+																	oper.res = recuperaResLC($1);
+																	oper.arg1 = recuperaResLC($1);
+																	oper.arg2 = recuperaResLC($3);
+																	insertaLC($$, finalLC($$), oper);
+																	guardaResLC($$, oper.res);
+																	
+																	liberaLC($3);
+																	liberarReg(oper.arg2);
+																	
+																														
+																}
+				
+				|	expression NEQUAL expression					{ $$ = $1;
+																	concatenaLC($$, $3);
+					
+																	Operacion oper;
+																	oper.op = "sne";
+																	oper.res = recuperaResLC($1);
+																	oper.arg1 = recuperaResLC($1);
+																	oper.arg2 = recuperaResLC($3);
+																	insertaLC($$, finalLC($$), oper);
+																	guardaResLC($$, oper.res);
+																	
+																	liberaLC($3);
+																	liberarReg(oper.arg2);
+																}
+				
+				
+				
+				
+				|	ID													{ if (!perteneceTS(symbolTable, $1)) { fprintf(stderr, "Error en linea %d: Variable %s no declarada\n", yylineno, $1); semanticErr++; }
 																		$$ = creaLC();
 																		Operacion oper;
 																		oper.op = "lw";
@@ -458,15 +603,20 @@ expression		:	expression PLUSOP expression						{ $$ = $1;
 																		oper.arg2 = NULL;
 																		insertaLC($$, finalLC($$), oper);
 																		guardaResLC($$, oper.res); }
-				
+				|	error		{
+									$$ = creaLC();
+									guardaResLC($$, "" );
+									fprintf(stderr, "Linea %d: Error en una expresión aritmética\n", yylineno);
+									syntacticErr++;
+								}
 				;
 				
 %%
 
-void yyerror(const char *s){
-	
-	printf("Error sintáctico (línea %d): (yyerror) %s \n", yylineno, yytext);
-	printf("Error sintáctico (línea %d): (yyerror) %s \n", yylineno, s);
+void yyerror(const char *str){
+	syntacticErr++;
+	//fprintf(stderr, "Error sintáctico (línea %d): (yyerror) %s \n", yylineno, yytext);
+	fprintf(stderr, "Error sintáctico: (línea %d): %s \n", yylineno, str);
 }
 
 
@@ -509,8 +659,11 @@ char * obtenerReg(){
 				snprintf(resultado, 4, "$t%d", i);
 				return resultado;
 			}
-		}
-		return NULL;
+	}
+	semanticErr++;
+	fprintf(stderr, "No es posible compilar el programa. Registros insuficientes.\n");
+	
+	return NULL;
 }
 
 
@@ -522,9 +675,9 @@ void liberarReg(char * registro){
 	
 	if (indice >= 0 && indice < MAX_REGISTERS) {
 			registers[indice] = 0;
-		} else {
-			printf("Índice fuera de rango.\n");
-		}
+	} else {
+		fprintf(stderr, "Índice fuera de rango.\n");
+	}
 	
 }
 
@@ -570,9 +723,18 @@ char * concatenaStr(char * str0, char * str1){
 	asprintf(&string, "%s%s", str0, str1);
 	return string;
 }
+
 char * newLabel(){
 	char * label;
 	asprintf(&label, "$label_%d",labelCount++);
 	return label;
 	
+}
+
+int numErrors(){
+	
+	int errCounter = 0;
+	errCounter = lexicalErr + syntacticErr + semanticErr;
+		
+	return errCounter;
 }

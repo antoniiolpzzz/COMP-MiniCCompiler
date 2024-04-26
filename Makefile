@@ -20,7 +20,7 @@ $(LEX_DIR)/lex.yy.c: $(LEX_DIR)/miniCLexical.l $(SYN_DIR)/miniCSyntactic.tab.h
 $(SYN_DIR)/miniCSyntactic.tab.c $(SYN_DIR)/miniCSyntactic.tab.h: $(SYN_DIR)/miniCSyntactic.y $(SEM_DIR)/miniCSymbolTable.h
 	bison -d -v -o $(SYN_DIR)/miniCSyntactic.tab.c $(SYN_DIR)/miniCSyntactic.y
 
-run: miniCCompiler prueba.mc
-	./miniCCompiler prueba.mc > prueba.s
+
+run: miniCCompiler 
+	./miniCCompiler testFile.mc > testFile.s
 #rm -f miniCCompiler
-	
