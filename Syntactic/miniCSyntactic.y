@@ -377,7 +377,7 @@ print_item		:	expression											{ $$ = $1;
 				
 				
 read_list		:	ID													{ if (!perteneceTS(symbolTable, $1)) { fprintf(stderr, "Error en linea %d: Variable %s no declarada\n", yylineno, $1); semanticErr++; } else { if (esConstante(symbolTable,$1)) { fprintf(stderr, "Error en linea %d: %s es constante\n", yylineno, $1); semanticErr++; } }
-																		$$ = creaLC(); /*$1;*/
+																		$$ = creaLC();
 																		
 																		Operacion oper;
 																		
