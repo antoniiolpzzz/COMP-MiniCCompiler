@@ -563,8 +563,7 @@ expression		:	expression PLUSOP expression						{ $$ = $1;
 																	
 																	liberaLC($3);
 																	liberarReg(oper.arg2);
-																	
-																														
+	
 																}
 				
 				|	expression NEQUAL expression					{ $$ = $1;

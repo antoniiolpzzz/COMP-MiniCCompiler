@@ -516,7 +516,7 @@ static const yytype_uint16 yyrline[] =
       98,   108,   110,   118,   124,   140,   142,   150,   162,   164,
      203,   226,   265,   305,   308,   310,   319,   321,   329,   352,
      380,   405,   432,   444,   456,   468,   480,   490,   492,   508,
-     523,   538,   553,   570,   588,   598,   606
+     523,   538,   553,   569,   587,   597,   605
 };
 #endif
 
@@ -2111,13 +2111,12 @@ yyreduce:
 																	
 																	liberaLC((yyvsp[(3) - (3)].cod));
 																	liberarReg(oper.arg2);
-																	
-																														
+	
 																;}
     break;
 
   case 43:
-#line 570 "Syntactic/miniCSyntactic.y"
+#line 569 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = (yyvsp[(1) - (3)].cod);
 																	concatenaLC((yyval.cod), (yyvsp[(3) - (3)].cod));
 					
@@ -2135,7 +2134,7 @@ yyreduce:
     break;
 
   case 44:
-#line 588 "Syntactic/miniCSyntactic.y"
+#line 587 "Syntactic/miniCSyntactic.y"
     { if (!perteneceTS(symbolTable, (yyvsp[(1) - (1)].str))) { fprintf(stderr, "Error en linea %d: Variable %s no declarada\n", yylineno, (yyvsp[(1) - (1)].str)); semanticErr++; }
 																		(yyval.cod) = creaLC();
 																		Operacion oper;
@@ -2148,7 +2147,7 @@ yyreduce:
     break;
 
   case 45:
-#line 598 "Syntactic/miniCSyntactic.y"
+#line 597 "Syntactic/miniCSyntactic.y"
     { (yyval.cod) = creaLC();
 																		Operacion oper;
 																		oper.op = "li";
@@ -2160,7 +2159,7 @@ yyreduce:
     break;
 
   case 46:
-#line 606 "Syntactic/miniCSyntactic.y"
+#line 605 "Syntactic/miniCSyntactic.y"
     {
 									(yyval.cod) = creaLC();
 									guardaResLC((yyval.cod), "" );
@@ -2171,7 +2170,7 @@ yyreduce:
 
 
 /* Line 1267 of yacc.c.  */
-#line 2175 "Syntactic/miniCSyntactic.tab.c"
+#line 2174 "Syntactic/miniCSyntactic.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2385,7 +2384,7 @@ yyreturn:
 }
 
 
-#line 614 "Syntactic/miniCSyntactic.y"
+#line 613 "Syntactic/miniCSyntactic.y"
 
 
 void yyerror(const char *str){

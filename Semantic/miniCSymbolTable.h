@@ -30,11 +30,6 @@ PosicionLista siguienteLS(Lista lista, PosicionLista p);
 void imprimirTablaS(Lista lista);
 int perteneceTS(Lista lista, char * simbolo);
 int esConstante(Lista lista, char * simbolo);
-//void añadeEntrada(Lista lista, char * simbolo, Tipo tipo);
-
-
-//Pending
-
 
 
 #endif

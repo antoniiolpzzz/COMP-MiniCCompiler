@@ -22,14 +22,14 @@ panico				[^ \n\t\r/a-zA-Z_0-9{}(),;=+\-*"]+
 
 %%
 
-		/* COMENTARIOS Y MULTILINEA*/
+		/* COMENTARIOS Y MULTILINEA */
 "/*"										BEGIN comm;
 <comm>[*]+[/]								BEGIN 0;
 <comm>[^*]*									;
 <comm>[*]+[^/*]*							;
 "//"(.*)[\n]                                ;
 
-		/* PALABRAS RESERVADAS*/
+		/* PALABRAS RESERVADAS */
 [ \n\t]+                                    ;
 var											return VAR;
 const										return CONST;
@@ -40,7 +40,7 @@ print										return PRINT;
 read										return READ;
 do											return DO;
 
-		/* CARACTERES ESPECIALES*/
+		/* CARACTERES ESPECIALES */
 ";"                                         return SEMICOLON;
 ","                                         return COMMA;
 "+"                                         return PLUSOP;

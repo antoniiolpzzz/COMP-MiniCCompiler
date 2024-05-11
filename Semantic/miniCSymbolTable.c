@@ -94,8 +94,6 @@ PosicionLista siguienteLS(Lista lista, PosicionLista p) {
 }
 
 
-//NUESTRO
-
 int perteneceTS(Lista lista, char * simbolo){
   
   PosicionLista encontrado = buscaLS(lista, simbolo);

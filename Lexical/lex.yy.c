@@ -1000,7 +1000,7 @@ YY_DECL
 
 
 #line 26 "Lexical/miniCLexical.l"
-		/* COMENTARIOS Y MULTILINEA*/
+		/* COMENTARIOS Y MULTILINEA */
 #line 1004 "Lexical/lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
@@ -1096,7 +1096,7 @@ YY_RULE_SETUP
 #line 31 "Lexical/miniCLexical.l"
 ;
 	YY_BREAK
-/* PALABRAS RESERVADAS*/
+/* PALABRAS RESERVADAS */
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
@@ -1143,7 +1143,7 @@ YY_RULE_SETUP
 #line 42 "Lexical/miniCLexical.l"
 return DO;
 	YY_BREAK
-/* CARACTERES ESPECIALES*/
+/* CARACTERES ESPECIALES */
 case 15:
 YY_RULE_SETUP
 #line 45 "Lexical/miniCLexical.l"
