@@ -29,7 +29,7 @@ After this, you can execute the `make run` command, which will compile the `test
 
 ```bash
 ./miniCCompiler inputfile.mc > compiledfile.s
-
+```
 ## Disclaimer:
 
 This project serves as an educational tool and might not be a fully-fledged, production-ready compiler.
