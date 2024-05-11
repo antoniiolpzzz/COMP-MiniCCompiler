@@ -36,4 +36,4 @@ This project serves as an educational tool and might not be a fully-fledged, pro
 
 ## License:
 
-(Specify the license under which the project is distributed)
+Please see the [LICENSE](LICENSE) file for details.
