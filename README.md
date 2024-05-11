@@ -23,11 +23,12 @@ This project is geared towards computer engineering students, particularly those
 
 ## Getting Started:
 
-(Instructions on how to set up and run the compiler will be added here)
+To execute the necessary compilation directives to run the project, we will use the `make` tool. In the root directory of the project, execute the `make` command, which will automatically perform all necessary actions, ultimately creating the `miniCCompiler` file, corresponding to our executable.
 
-## Further Enhancements:
+After this, you can execute the `make run` command, which will compile the `testFile.mc` file located in the root directory, or alternatively use the `miniCCompiler` binary as follows:
 
-(Mention any potential areas for future development, like adding functionalities to the miniC compiler)
+```bash
+./miniCCompiler inputfile.mc > compiledfile.s
 
 ## Disclaimer:
 

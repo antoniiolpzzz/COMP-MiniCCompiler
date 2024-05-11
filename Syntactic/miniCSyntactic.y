@@ -56,7 +56,7 @@
 %left DIV TIMES
 %left UMINUS
 
-//%expect 1
+%expect 1
 
 %%
 
@@ -224,7 +224,6 @@ statement		:	ID EQUALS expression SEMICOLON						{ if (!perteneceTS(symbolTable,
 																	}
 													
 				|	DO statement WHILE LPAR expression RPAR 			{ $$ = creaLC();
-																		concatenaLC($$, $5);
 																		char * label_DOWHILE = newLabel();
 																		char * label_ENDDW = newLabel();
 					
@@ -614,7 +613,6 @@ expression		:	expression PLUSOP expression						{ $$ = $1;
 
 void yyerror(const char *str){
 	syntacticErr++;
-	//fprintf(stderr, "Error sintáctico (línea %d): (yyerror) %s \n", yylineno, yytext);
 	fprintf(stderr, "Error sintáctico: (línea %d): %s \n", yylineno, str);
 }
 
