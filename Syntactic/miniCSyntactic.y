@@ -1,5 +1,5 @@
 //
-// miniC.y
+// miniCSyntactic.y
 // Created by Antonio López Toboso and Mercedes López Caballero on 6/3/24.
 
 
@@ -610,13 +610,21 @@ expression		:	expression PLUSOP expression						{ $$ = $1;
 				;
 				
 %%
-
+/**
+ * Función de error léxico
+    * @param str
+ */
 void yyerror(const char *str){
 	syntacticErr++;
 	fprintf(stderr, "Error sintáctico: (línea %d): %s \n", yylineno, str);
 }
 
-
+/**
+ * Función para añadir una entrada a la tabla de símbolos
+    * @param lista
+    * @param simbolo
+    * @param tipo
+ */
 void añadeEntrada(Lista lista, char * simbolo, Tipo tipo){
 	
 	Simbolo entrada;
@@ -644,7 +652,10 @@ void añadeEntrada(Lista lista, char * simbolo, Tipo tipo){
 }
 
 
-
+/**
+    * Función para obtener un registro
+        * @return
+    */
 char * obtenerReg(){
 	
 	for (int i = 0; i < MAX_REGISTERS; i++) {
@@ -663,8 +674,10 @@ char * obtenerReg(){
 	return NULL;
 }
 
-
-
+/**
+    * Función para liberar un registro
+        * @param registro
+    */
 void liberarReg(char * registro){
 	
 	char * numeroRegistro = registro + 2;
@@ -679,7 +692,10 @@ void liberarReg(char * registro){
 }
 
 
-
+/**
+    * Función para imprimir el código almacenado en la lista de codigo
+        * @param codigo
+    */
 void imprimirCodigo(ListaC codigo) {
 	
 	printf("##################\n");
@@ -714,6 +730,12 @@ void imprimirCodigo(ListaC codigo) {
 	printf("\tsyscall\n");
 }
 
+/**
+    * Función para concatenar dos strings
+        * @param str0
+        * @param str1
+        * @return
+    */
 char * concatenaStr(char * str0, char * str1){
 	
 	char * string;
@@ -721,6 +743,10 @@ char * concatenaStr(char * str0, char * str1){
 	return string;
 }
 
+/**
+    * Función para obtener una nueva etiqueta
+        * @return
+    */
 char * newLabel(){
 	char * label;
 	asprintf(&label, "$label_%d",labelCount++);
@@ -728,6 +754,10 @@ char * newLabel(){
 	
 }
 
+/**
+    * Función para contar el número de errores
+        * @return
+    */
 int numErrors(){
 	
 	int errCounter = 0;

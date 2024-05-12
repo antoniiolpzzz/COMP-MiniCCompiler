@@ -1,4 +1,4 @@
-
+/* */
 /* miniCLexical.l */
 /* Created by Antonio L—pez Toboso and Mercedes L—pez Caballero on 14/2/24. */
 
@@ -69,7 +69,11 @@ do											return DO;
 {panico}									{fprintf(stderr, "Linea %d: Error: Caracter (%s) no permitido.\n",yylineno, yytext); lexicalErr++; }
 
 %%
-
+/**
+  * Funcion para comprobar que un numero se encuentra 
+  * dentro de un numero permitido
+  * @return
+*/
 int in_range(){
 	
 	if( atoll(yytext) > MAX_INTEGER ) {

@@ -27,4 +27,3 @@ clean:
 
 run: miniCCompiler 
 	./miniCCompiler testFile.mc > testFile.s
-#rm -f miniCCompiler

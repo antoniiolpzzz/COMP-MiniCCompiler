@@ -1,5 +1,5 @@
 //
-// main.c
+// miniCCompilerMain.c
 // Created by Antonio López Toboso and Mercedes López Caballero on 14/2/24.
 
 #include <stdio.h>
